@@ -178,6 +178,7 @@ export default function Dashboard() {
           </StyledContainer>
         </StyledSection>
 
+{userRole !== 'admin' && (
         <StyledSection>
           <StyledContainer>
             <h2>Ihre Profildaten:</h2>
@@ -196,7 +197,8 @@ export default function Dashboard() {
             </div>
           </StyledContainer>
         </StyledSection>
-
+        )}
+{userRole !== 'admin' && (
         <StyledSection>
           <StyledContainer>
             <h2>Projekt liefern</h2>
@@ -207,7 +209,8 @@ export default function Dashboard() {
             </StyledForms>
           </StyledContainer>
         </StyledSection>
-
+        )}
+        
         <StyledSection>
           <StyledContainer>
             <h2>{userRole === 'admin' ? 'Alle eingereichten Formulare' : 'Bereits bearbeitete Formulare:'}</h2>
