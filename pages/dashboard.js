@@ -40,25 +40,73 @@ export default function Dashboard() {
         if (profileData?.isadmin) setUserRole('admin');
       }
 
-      // 📥 Formulare laden (nach user oder admin)
-      let query = supabase.from('forms').select('*').order('created_at', { ascending: false });
+
+      // -------------------------
+      // 1) Forms laden (abhängig von role)
+      // -------------------------
+      let formsQuery = supabase
+        .from('forms')
+        .select('*')
+        .order('created_at', { ascending: false });
 
       if (profileData?.isadmin) {
         // Admin sieht alle eingereichten Formulare
-        query = query.eq('status', 'submitted');
+        formsQuery = formsQuery.eq('status', 'submitted');
         setUserRole('admin');
       } else {
         // Normaler Nutzer sieht nur eigene Formulare
-        query = query.eq('user_id', user.id);
+        formsQuery = formsQuery.eq('user_id', user.id);
       }
 
-      const { data: formsData, error: formError } = await query;
+      const { data: formsData, error: formsError } = await formsQuery;
 
-      if (formError) {
-        console.error('Fehler beim Laden der Formulare:', formError.message || formError);
-      } else {
-        setForms(formsData || []);
+      if (formsError) {
+        console.error('Fehler beim Laden der Formulare:', formsError.message || formsError);
+        setForms([]);
+        return;
       }
+
+      if (!formsData || formsData.length === 0) {
+        setForms([]);
+        return;
+      }
+
+      // -------------------------
+      // 2) Profiles für alle forms per IN abfragen
+      // -------------------------
+      const userIds = Array.from(new Set(formsData.map((f) => f.user_id).filter(Boolean)));
+      let profilesMap = {};
+
+      if (userIds.length > 0) {
+        const { data: profilesData, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, company_name')
+          .in('id', userIds);
+
+        if (profilesError) {
+          console.error('Fehler beim Laden der zugehörigen Profiles:', profilesError.message || profilesError);
+          // trotzdem die forms ohne enrichment setzen
+          const fallbackForms = formsData.map(f => ({ ...f, company_name: null }));
+          setForms(fallbackForms);
+          return;
+        }
+
+        // Map userId -> profile
+        profilesMap = profilesData.reduce((acc, p) => {
+          acc[p.id] = p;
+          return acc;
+        }, {});
+      }
+
+      // -------------------------
+      // 3) Forms mit company_name anreichern
+      // -------------------------
+      const enrichedForms = formsData.map((f) => ({
+        ...f,
+        company_name: profilesMap[f.user_id]?.company_name ?? null,
+      }));
+
+      setForms(enrichedForms);
     };
 
     getUserFormsAndProfile();
@@ -169,6 +217,11 @@ export default function Dashboard() {
               <ul>
                 {forms.map((form) => (
                   <StyledList key={form.id}>
+                    {userRole === 'admin' && (
+                      <>
+                        🏢 {form.company_name || 'Unbekannte Firma'} –{' '}
+                      </>
+                    )}
                     📖Objekt: {form.objektbezeichnung || 'Noch nicht angegeben'} – Status: {form.status}
                     <div>
                       <StyledButton onClick={() => continueForm(form.id)}>

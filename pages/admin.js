@@ -39,7 +39,7 @@ export default function Admin() {
         return;
       }
 
-      if (!profile?.isAdmin) {
+      if (!profile?.isadmin) {
         console.warn('Kein Admin');
         setLoading(false);
         return;
@@ -74,7 +74,7 @@ export default function Admin() {
         <div key={f.id} style={{ border: '1px solid #ccc', marginBottom: 10, padding: 10 }}>
           <p>
             <strong>Benutzer:</strong> {f.users?.email || f.profiles?.company_name || 'Unbekannt'}
-            {f.profiles?.isAdmin ? ' (Admin)' : ''}
+            {f.profiles?.isdmin ? ' (Admin)' : ''}
           </p>
           <p>
             <strong>Stadt:</strong> {f.city}
