@@ -130,9 +130,7 @@ export default function Dashboard() {
       .from("forms")
       .insert({
         user_id: userId,
-        city: "",
-        size: [],
-        strength: null,
+        // city: "",
         status: "draft",
       })
       .select()

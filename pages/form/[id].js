@@ -22,7 +22,6 @@ export default function Form() {
 // hier das neue Formularfeld ergänzen
   const [formData, setFormData] = useState({
     city: '',
-    size: [],
     region: '',
     konjunktur: '',
     standard: '',
@@ -176,13 +175,13 @@ export default function Form() {
     router.push('/dashboard');
   };
 
-  const toggleSize = (val) => {
-    if (isReadonly) return;
-    setFormData(prev => ({
-      ...prev,
-      size: prev.size.includes(val) ? prev.size.filter(s => s !== val) : [...prev.size, val],
-    }));
-  };
+  // const toggleSize = (val) => {
+  //   if (isReadonly) return;
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     size: prev.size.includes(val) ? prev.size.filter(s => s !== val) : [...prev.size, val],
+  //   }));
+  // };
 
   // PDF Download
   const downloadPdf = () => {
