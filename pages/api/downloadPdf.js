@@ -35,6 +35,21 @@ export default async function handler(req, res) {
 
   doc.pipe(res);
 
+// Hilfe für das formatieren
+
+// doc.moveDown(); -> Leerzeile einfügen
+// doc.font('Helvetica-Bold').text('Fettschrift');
+// doc.font('Helvetica-Oblique').text('Kursiv');
+// doc.font('Helvetica').text('Unterstrichen', { underline: true });
+// doc.font('fonts/OpenSans-Bold.ttf').text('Eigene Schriftart');
+
+// doc.text('Zentriert', { align: 'center' });
+// doc.text('Rechtsbündig', { align: 'right' });
+// doc.text('Blocksatz', { align: 'justify' });
+
+// doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke(); // horizontale Linie
+
+
   // PDF Inhalt
   doc.fontSize(20).text('Formular', { underline: true });
   doc.moveDown();
@@ -42,10 +57,16 @@ export default async function handler(req, res) {
   doc.fontSize(14).text(`Stadt: ${form.city || '-'}`);
   // doc.text(`Größe: ${Array.isArray(form.size) ? form.size.join(', ') : '-'}`);
   doc.text(`Objektbezeichnung: ${form.objektbezeichnung || '-'}`);
+  doc.moveDown(); 
+
+  doc.fontSize(20).text('Überschrift', { underline: true });
+  doc.fontSize(14).moveDown(); 
+
   doc.text(`Planungsbeginn: ${form.planungsbeginn || '-'}`);
   doc.text(`Vergabedatum: ${form.vergabedatum || '-'}`);
   doc.text(`Baubeginn: ${form.baubeginn || '-'}`);
   doc.text(`Bauende: ${form.bauende || '-'}`);
+  doc.moveDown();
   doc.text(`Allgemeine Objektinformation: ${form.allgemeine_objektinformation || '-'}`);
   doc.text(`Baukonstruktion: ${form.baukonstruktion || '-'}`);
   doc.text(`Technische Anlagen: ${form.technische_anlagen || '-'}`);
