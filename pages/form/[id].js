@@ -23,7 +23,9 @@ export default function Form() {
   const [formData, setFormData] = useState({
     city: '',
     size: [],
-    strength: '',
+    region: '',
+    konjunktur: '',
+    standard: '',
     status: 'draft',
     objektbezeichnung: '', 
     baubeginn: "",
@@ -336,65 +338,109 @@ export default function Form() {
         <StyledFieldset>
           <legend><h2>3. Kosteneinflüsse</h2></legend>
 
-          <div>
-            <label htmlFor='region'>
-              <input
-                type="checkbox"
-                onChange={() => toggleSize('klein')}
-                checked={formData.size.includes('klein')}
-                disabled={isReadonly}
-              /> klein
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                onChange={() => toggleSize('mittel')}
-                checked={formData.size.includes('mittel')}
-                disabled={isReadonly}
-              /> mittel
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                onChange={() => toggleSize('groß')}
-                checked={formData.size.includes('groß')}
-                disabled={isReadonly}
-              /> groß
-            </label>
-          </div>
 
-          <div>
+        <h3>Region</h3>
+          <StyledRadiobuttons>
             <label>
               <input
                 type="radio"
-                name="strength"
-                value="stark"
-                checked={formData.strength === 'stark'}
-                onChange={e => setFormData({ ...formData, strength: e.target.value })}
+                name="region"
+                value="land"
+                checked={formData.region === 'land'}
+                onChange={e => setFormData({ ...formData, region: e.target.value })}
                 disabled={isReadonly}
-              /> stark
+              /> ländlich
             </label>
             <label>
               <input
                 type="radio"
-                name="strength"
-                value="mittel"
-                checked={formData.strength === 'mittel'}
-                onChange={e => setFormData({ ...formData, strength: e.target.value })}
+                name="region"
+                value="stadt"
+                checked={formData.region === 'stadt'}
+                onChange={e => setFormData({ ...formData, region: e.target.value })}
                 disabled={isReadonly}
-              /> mittel
+              /> Stadt
             </label>
             <label>
               <input
                 type="radio"
-                name="strength"
+                name="region"
+                value="großstadt"
+                checked={formData.region === 'großstadt'}
+                onChange={e => setFormData({ ...formData, region: e.target.value })}
+                disabled={isReadonly}
+              /> Großstadt
+            </label>
+          </StyledRadiobuttons>
+
+        <h3>Konjunktur</h3>
+          <StyledRadiobuttons>
+            <label>
+              <input
+                type="radio"
+                name="konjunktur"
                 value="schwach"
-                checked={formData.strength === 'schwach'}
-                onChange={e => setFormData({ ...formData, strength: e.target.value })}
+                checked={formData.konjunktur === 'schwach'}
+                onChange={e => setFormData({ ...formData, konjunktur: e.target.value })}
                 disabled={isReadonly}
               /> schwach
             </label>
-          </div>
+            <label>
+              <input
+                type="radio"
+                name="konjunktur"
+                value="mittel"
+                checked={formData.konjunktur === 'mittel'}
+                onChange={e => setFormData({ ...formData, konjunktur: e.target.value })}
+                disabled={isReadonly}
+              /> mittel
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="konjunktur"
+                value="hoch"
+                checked={formData.konjunktur === 'hoch'}
+                onChange={e => setFormData({ ...formData, konjunktur: e.target.value })}
+                disabled={isReadonly}
+              /> hoch
+            </label>
+          </StyledRadiobuttons>
+
+
+        <h3>Standard</h3>
+          <StyledRadiobuttons>
+            <label>
+              <input
+                type="radio"
+                name="standard"
+                value="schwach"
+                checked={formData.standard === 'schwach'}
+                onChange={e => setFormData({ ...formData, standard: e.target.value })}
+                disabled={isReadonly}
+              /> schwach
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="standard"
+                value="mittel"
+                checked={formData.standard === 'mittel'}
+                onChange={e => setFormData({ ...formData, standard: e.target.value })}
+                disabled={isReadonly}
+              /> mittel
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="standard"
+                value="hoch"
+                checked={formData.standard === 'hoch'}
+                onChange={e => setFormData({ ...formData, standard: e.target.value })}
+                disabled={isReadonly}
+              /> hoch
+            </label>
+          </StyledRadiobuttons>
         </StyledFieldset>
 
         <StyledButton type="button" onClick={handleSave} disabled={isReadonly}>
@@ -545,6 +591,8 @@ const StyledFieldset = styled.fieldset`
     /* Breite des Inhalts im fieldset */
     width: 50%;
   }
+
+
 `;
 
 const StyledButton = styled.button`
@@ -566,6 +614,16 @@ const StyledButton = styled.button`
     text-decoration: none;
   }
 `;
+
+const StyledRadiobuttons = styled.div`
+  // background-color: green;
+    display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: center;
+  
+`;
+
 const StyledBackButton = styled.button`
   background-color: #777;
   color: white;

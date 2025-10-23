@@ -40,9 +40,21 @@ export default async function handler(req, res) {
   doc.moveDown();
 
   doc.fontSize(14).text(`Stadt: ${form.city || '-'}`);
-  doc.text(`Größe: ${Array.isArray(form.size) ? form.size.join(', ') : '-'}`);
-  doc.text(`Stärke: ${form.strength || '-'}`);
-  doc.text(`Status: ${form.status || '-'}`);
+  // doc.text(`Größe: ${Array.isArray(form.size) ? form.size.join(', ') : '-'}`);
+  doc.text(`Objektbezeichnung: ${form.objektbezeichnung || '-'}`);
+  doc.text(`Planungsbeginn: ${form.planungsbeginn || '-'}`);
+  doc.text(`Vergabedatum: ${form.vergabedatum || '-'}`);
+  doc.text(`Baubeginn: ${form.baubeginn || '-'}`);
+  doc.text(`Bauende: ${form.bauende || '-'}`);
+  doc.text(`Allgemeine Objektinformation: ${form.allgemeine_objektinformation || '-'}`);
+  doc.text(`Baukonstruktion: ${form.baukonstruktion || '-'}`);
+  doc.text(`Technische Anlagen: ${form.technische_anlagen || '-'}`);
+  doc.text(`Beschreibung Sonstiges: ${form.beschreibung_sonstiges || '-'}`);
+  doc.text(`NUF: ${form.nuf || '-'}`);
+  doc.text(`VF: ${form.tf || '-'}`);
+  doc.text(`BGF: ${form.bgf || '-'}`);
+
+
 
   doc.end();
 }
