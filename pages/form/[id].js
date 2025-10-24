@@ -22,6 +22,9 @@ export default function Form() {
 // hier das neue Formularfeld ergänzen
   const [formData, setFormData] = useState({
     city: '',
+    street: '',
+    landkreis: '',
+    bundesland: '',
     region: '',
     konjunktur: '',
     standard: '',
@@ -175,14 +178,6 @@ export default function Form() {
     router.push('/dashboard');
   };
 
-  // const toggleSize = (val) => {
-  //   if (isReadonly) return;
-  //   setFormData(prev => ({
-  //     ...prev,
-  //     size: prev.size.includes(val) ? prev.size.filter(s => s !== val) : [...prev.size, val],
-  //   }));
-  // };
-
   // PDF Download
   const downloadPdf = () => {
     window.open(`/api/downloadPdf?id=${id}`, '_blank');
@@ -204,11 +199,21 @@ export default function Form() {
       <form>
 
         <StyledFieldset>
-        {/* Allgemeine Angaben */}
+        {/* Allgemeine Angaben - Excel Reiter: Beschreibung*/}
           <legend><h2>1. Allgemeine Angaben</h2></legend>
 
           <div className="spacebetween">
-            <label htmlFor="objektbezeichnung">Objektbezeichnung: </label>
+            <label htmlFor="bauherr">Bauherr: </label>
+            <input
+              id="bauherr"
+              placeholder="Bauherr"
+              value={formData.bauherr}
+              onChange={e => setFormData({ ...formData, bauherr: e.target.value })}
+              readOnly={isReadonly}
+              />
+          </div>
+          <div className="spacebetween">
+            <label htmlFor="objektbezeichnung">Objektbezeichnung / Art der Nutzung: </label>
             <input
               id="objektbezeichnung"
               placeholder="Objektbezeichnung"
@@ -217,9 +222,9 @@ export default function Form() {
               readOnly={isReadonly}
               />
           </div>
-
+        <p>Objektstandort: </p>
           <div className="spacebetween">
-            <label htmlFor="city">Stadt: </label>
+            <label htmlFor="city">Postleiztahl und Stadt: </label>
             <input
               id="city"
               placeholder="Stadt"
@@ -229,7 +234,39 @@ export default function Form() {
               />
           </div>
 
+          <div className="spacebetween">
+            <label htmlFor="street">Straße und Hausnummer: </label>
+            <input
+              id="street"
+              placeholder="Straße und Hausnummer"
+              value={formData.street}
+              onChange={e => setFormData({ ...formData, street: e.target.value })}
+              readOnly={isReadonly}
+              />
+          </div>
+          <div className="spacebetween">
+            <label htmlFor="landkreis">Landkreis: </label>
+            <input
+              id="landkreis"
+              placeholder="Landkreis"
+              value={formData.landkreis}
+              onChange={e => setFormData({ ...formData, landkreis: e.target.value })}
+              readOnly={isReadonly}
+              />
+          </div>
+          <div className="spacebetween">
+            <label htmlFor="bundesland">Bundesland: </label>
+            <input
+              id="bundesland"
+              placeholder="Bundesland"
+              value={formData.bundesland}
+              onChange={e => setFormData({ ...formData, bundesland: e.target.value })}
+              readOnly={isReadonly}
+              />
+          </div>
 
+
+        <p>Bauzeiten: </p>
           <div className="spacebetween">
             <label htmlFor="planungsbeginn">Planungsbeginn: </label>
             <input
@@ -270,7 +307,17 @@ export default function Form() {
               readOnly={isReadonly}
               />
           </div>
-
+              <p> Copyrights für die Fotos: </p>
+          <div className="spacebetween">
+            <label htmlFor="fotograf">Copyright liegt bei: </label>
+            <input
+              id="fotograf"
+              placeholder="Fotograf"
+              value={formData.fotograf}
+              onChange={e => setFormData({ ...formData, fotograf: e.target.value })}
+              readOnly={isReadonly}
+              />
+          </div>
         </StyledFieldset>
 
         <StyledButton type="button" onClick={handleSave} disabled={isReadonly}>
@@ -308,7 +355,7 @@ export default function Form() {
             <label htmlFor="technische_anlagen">Technische Anlagen: </label>
             <textarea
               id="technische_anlagen"
-              placeholder="Zwar wurden Varianten für die Energieversorgung berechnet, dennoch musste das Passivhaus an Fernwärme angeschlossen werden. Sie wird an einen gemeinsamen Speicher übergeben, an den auch Flachkollektoren angeschlossen sind. Um eine Nachrüstung von Photovoltaikelementen zu vereinfachen, wurden Leerrohre verlegt. Jede Wohnung erhielt eine Zu- und Abluftanlage mit Wärmerückgewinnung. Die Luftdichtheit der Gebäude wurde mit einem Blower-Door-Test geprüft. Die passivhaustauglichen Holz-Aluminium-Fenster mit Dreifachverglasung sind zudem hoch schalldämmend."
+              placeholder="Beschreibe das Objekt hier..."
               value={formData.technische_anlagen}
               onChange={e => setFormData({ ...formData, technische_anlagen: e.target.value })}
               readOnly={isReadonly}
@@ -320,7 +367,7 @@ export default function Form() {
             <label htmlFor="beschreibung_sonstiges">Sonstiges: </label>
             <textarea
               id="beschreibung_sonstiges"
-              placeholder="Der kompakte Baukörper hat eine weinrote Holzfassade und ein hellgraues Staffelgeschoss. Auf der Nordseite wurden neben den Fenstern rückseitig lackierte Gläser eingesetzt. Sie lassen die Fensterformate breiter erscheinen, während innen flexibel möbliert werden kann. Die Holzinnendecken wurden weiß lasiert. Als weiteres Gestaltungselement wurden in den Treppenaugen Regale eingebaut. Den Vorbereich prägen optisch abgetrennte Carports und ein Holzsteg unter einem Glasvordach. Der Bereich hinter dem Haus wurde mit Erde angefüllt und erhielt eine Gartenanlage mit einer Trockenmauer."
+              placeholder="Beschreibe das Objekt hier..."
               value={formData.beschreibung_sonstiges}
               onChange={e => setFormData({ ...formData, beschreibung_sonstiges: e.target.value })}
               readOnly={isReadonly}
