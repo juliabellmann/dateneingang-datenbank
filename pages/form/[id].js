@@ -34,6 +34,7 @@ export default function Form() {
     bauende: "",
     planungsbeginn: "",
     vergabedatum: "",
+    bueroAnzNe: "",
     allgemeine_objektinformation: "",
     baukonstruktion: "",
     technische_anlagen: '',
@@ -318,6 +319,26 @@ export default function Form() {
               readOnly={isReadonly}
               />
           </div>
+
+          <p>Nutzungseinheiten: </p>
+
+          <div className="spacebetween">
+            <label htmlFor="bueroAnzNe">Bürogebäude - Anzahl Arbeitsplätze: </label>
+            <input
+              type='number'
+              id="bueroAnzNe"
+              step="1"
+              min="0"
+              placeholder=" - "
+              value={formData.bueroAnzNe}
+              onChange={e => setFormData({ ...formData, bueroAnzNe: e.target.value })}
+              readOnly={isReadonly}
+              />
+          </div>
+
+
+
+
         </StyledFieldset>
 
         <StyledButton type="button" onClick={handleSave} disabled={isReadonly}>
