@@ -3,23 +3,35 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import supabase from '../../lib/supabaseClient';
 import styled from 'styled-components';
-// npm install react-toastify
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// import { useState } from "react";
 
 export default function Form() {
   const router = useRouter();
   const { id } = router.query;
 
-  // Datei + Bildvorschau (signed URL oder lokale Vorschau)
-  const [file, setFile] = useState(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+// Einzelne ausgewählte Dateien (temporär vor Upload)
+  const [selectedFiles, setSelectedFiles] = useState({
+    calculations: null,
+    drawings: null,
+    other: null,
+  });
 
+  // Vorschau / signed URLs für bereits hochgeladene Objekte
+  const [filePreviews, setFilePreviews] = useState({
+    calculations: null,
+    drawings: null,
+    other: null,
+  });
 
-// hier das neue Formularfeld ergänzen
+  // Metadaten der hochgeladenen Dateien aus public.form_files
+  const [storedFiles, setStoredFiles] = useState({
+    calculations: null,
+    drawings: null,
+    other: null,
+  });
+
   const [formData, setFormData] = useState({
     city: '',
     street: '',
@@ -43,75 +55,109 @@ export default function Form() {
     vf: "",
     tf: "",
     bgf: '',
-    image_file_path: null, // <-- Pfad im Storage (privater Bucket)
   });
 
   const [isReadonly, setIsReadonly] = useState(false); // ⬅️ Zustand zum Sperren des Formulars
   // Hilfsfunktion: signed URL für bestehendes Bild erzeugen
-  async function refreshSignedUrl(filePath) {
-    if (!filePath) {
-      setImagePreviewUrl(null);
-      return;
-    }
-    const { data, error } = await supabase
-      .storage
-      .from('form-images')
-      .createSignedUrl(filePath, 60 * 10); // 10 Minuten
+  async function createSignedUrl(bucket, objectKey, ttlSeconds = 60 * 10) {
+    if (!objectKey) return null;
+    const { data, error } = await supabase.storage.from(bucket).createSignedUrl(objectKey, ttlSeconds);
     if (error) {
       console.error('Signed URL Fehler:', error);
-      setImagePreviewUrl(null);
-      return;
+      return null;
     }
-    setImagePreviewUrl(data.signedUrl);
+    return data.signedUrl;
   }
 
-    // Formular laden
-  useEffect(() => {
+  // Formular + zugehörige Dateien laden
+ useEffect(() => {
     if (id && id !== 'new') {
-      supabase
-        .from('forms')
-        .select('*')
-        .eq('id', id)
-        .single()
-        .then(async ({ data, error }) => {
-          if (error) {
-            console.error(error);
-            return;
+      (async () => {
+        const { data: formRow, error: formErr } = await supabase
+          .from('forms')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (formErr) {
+          console.error(formErr);
+          return;
+        }
+        if (formRow) {
+          setFormData(prev => ({ ...prev, ...formRow }));
+          if (formRow.status === 'submitted') setIsReadonly(true);
+        }
+
+        // Dateien aus public.form_files laden
+        const { data: filesData, error: filesErr } = await supabase
+          .from('form_files') // table name
+          .select('*')
+          .eq('form_id', id);
+
+        if (filesErr) {
+          console.error('Fehler beim Laden der Dateien:', filesErr);
+          return;
+        }
+
+        // Mappe die Ergebnisse auf die drei Typen
+        const mapped = { calculations: null, drawings: null, other: null };
+        if (filesData && filesData.length) {
+          for (const f of filesData) {
+            if (f.file_type === 'calculations') mapped.calculations = f;
+            if (f.file_type === 'drawings') mapped.drawings = f;
+            if (f.file_type === 'other') mapped.other = f;
           }
-          if (data) {
-            setFormData(prev => ({ ...prev, ...data }));
-            if (data.status === 'submitted') setIsReadonly(true);
-            if (data.image_file_path) await refreshSignedUrl(data.image_file_path);
+        }
+        setStoredFiles(mapped);
+
+        // Für jeden vorhandenen Eintrag eine signed URL erzeugen (wenn bucket/object_key vorhanden)
+        const previews = { calculations: null, drawings: null, other: null };
+        for (const key of ['calculations', 'drawings', 'other']) {
+          const entry = mapped[key];
+          if (entry && entry.object_key) {
+            const url = await createSignedUrl(entry.bucket_id || 'form_files', entry.object_key);
+            previews[key] = url;
           }
-        });
+        }
+        setFilePreviews(previews);
+      })();
     }
   }, [id]);
 
-    // Datei-Auswahl
-  function handleFileChange(e) {
+// Datei-Auswahl Handler (für die 3 Inputs)
+  function handleFileSelect(type, e) {
     const f = e.target.files && e.target.files[0] ? e.target.files[0] : null;
-    setFile(f);
-    // lokale Vorschau (vor dem Upload)
-    if (f) {
+    setSelectedFiles(prev => ({ ...prev, [type]: f }));
+
+    // lokale Vorschau (nur für Bilder)
+    if (f && f.type.startsWith('image/')) {
       const localUrl = URL.createObjectURL(f);
-      setImagePreviewUrl(localUrl);
+      setFilePreviews(prev => ({ ...prev, [type]: localUrl }));
     } else {
-      // wenn abgewählt
-      refreshSignedUrl(formData.image_file_path);
+      // wenn keine lokale Vorschaubild-Datei ist, entferne lokale Vorschau (gebe ggf. stored preview zurück)
+      if (storedFiles[type]?.object_key) {
+        createSignedUrl(storedFiles[type].bucket_id || 'form_files', storedFiles[type].object_key)
+          .then(url => setFilePreviews(prev => ({ ...prev, [type]: url })))
+          .catch(() => setFilePreviews(prev => ({ ...prev, [type]: null })));
+      } else {
+        setFilePreviews(prev => ({ ...prev, [type]: null }));
+      }
     }
   }
 
-    // Upload ins private Bucket, Pfad = auth.uid()/timestamp-filename
-  async function uploadImage(fileToUpload) {
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr || !userData?.user) throw new Error('Nicht eingeloggt');
-    const userId = userData.user.id;
+  // Upload einer einzelnen Datei in form_files Bucket
+async function uploadFileToBucket(type, fileToUpload, formId, userId) {
+    if (!userId) {
+      const { data: ud, error: ue } = await supabase.auth.getUser();
+      if (ue || !ud?.user) throw new Error('Nicht eingeloggt');
+      userId = ud.user.id;
+    }
 
-    const filePath = `${userId}/${Date.now()}-${fileToUpload.name}`;
+    const filePath = `${userId}/${formId || 'new'}/${Date.now()}-${type}-${fileToUpload.name}`;
 
     const { error: upErr } = await supabase
       .storage
-      .from('form-images')
+      .from('form_files')
       .upload(filePath, fileToUpload, {
         cacheControl: '3600',
         upsert: false,
@@ -122,49 +168,97 @@ export default function Form() {
     return filePath;
   }
 
-    // Speichern (Zwischenspeichern / Aktualisieren)
-   const handleSave = async () => {
+  // insertFileMetadata: uploaded_by wird als Parameter übergeben
+async function insertFileMetadata({ formId, objectKey, fileType, fileName, contentType, size, uploaded_by }) {
+  if (!uploaded_by) throw new Error('uploaded_by fehlt');
+  const payload = {
+    form_id: formId,
+    object_key: objectKey,
+    file_type: fileType,
+    file_name: fileName,
+    content_type: contentType,
+    size: size,
+    bucket_id: 'form_files',
+    uploaded_by,
+    metadata: null,
+  };
+
+  console.info('Inserting form_files payload', { payload });
+
+  const { data, error } = await supabase.from('form_files').insert(payload).select();
+  if (error) {
+    console.error('INSERT form_files failed', { payload, error });
+    throw error;
+  }
+  return data?.[0] ?? null;
+}
+
+// Speichern (Zwischenspeichern / Aktualisieren) — jetzt mit Multi-File-Uploads
+  const handleSave = async () => {
     if (isReadonly) return;
 
     try {
-      const { data: userRes } = await supabase.auth.getUser();
-      if (!userRes?.user) {
+    
+    // hole user einmal oben in handleSave
+    const { data: userRes, error: userErr } = await supabase.auth.getUser();
+    if (userErr || !userRes?.user) {
         toast.error('Bitte einloggen.');
         return;
       }
+      const userId = userRes.user.id;
 
-      let image_file_path = formData.image_file_path;
-
-      // Falls neue Datei gewählt → hochladen und Pfad übernehmen
-      if (file) {
-        image_file_path = await uploadImage(file);
-      }
-
+    // Formular speichern/aktualisieren (damit wir eine form_id haben)
       const payload = {
         ...formData,
-        user_id: userRes.user.id,
+        user_id: userId,
         status: 'draft',
-        image_file_path,
       };
 
+      let formId = id;
       if (id === 'new') {
-        const { error: insertErr } = await supabase.from('forms').insert(payload);
+        const { data: insertData, error: insertErr } = await supabase.from('forms').insert(payload).select().single();
         if (insertErr) throw insertErr;
-        toast.success('Formular erfolgreich zwischengespeichert!', { position: 'top-right' });
+        formId = insertData.id;
+        router.replace(`/form/${formId}`, undefined, { shallow: true });
+        toast.success('Formular erfolgreich angelegt und zwischengespeichert.', { position: 'top-right' });
       } else {
-        const { error: updateErr } = await supabase.from('forms').update(payload).eq('id', id);
+        const { error: updateErr } = await supabase.from('forms').update(payload).eq('id', formId);
         if (updateErr) throw updateErr;
         toast.success('Änderungen wurden gespeichert.', { position: 'top-center' });
       }
 
-      // Nach dem Speichern ggf. neue signed URL laden (falls neues Bild)
-      if (image_file_path) await refreshSignedUrl(image_file_path);
-      setFormData(prev => ({ ...prev, image_file_path }));
-      setFile(null);
-    } catch (error) {
+    // Für jeden selektierten Dateityp: upload + metadata insert + update storedFiles + signed preview
+    for (const type of ['calculations', 'drawings', 'other']) {
+      const f = selectedFiles[type];
+      if (f) {
+        // upload (übergebe userId, damit uploadPath korrekt ist)
+        const objectKey = await uploadFileToBucket(type, f, formId, userId);
+
+        // Insert Metadaten: übergebe uploaded_by: userId
+        const inserted = await insertFileMetadata({
+          formId,
+          objectKey,
+          fileType: type,
+          fileName: f.name,
+          contentType: f.type,
+          size: f.size,
+          uploaded_by: userId,
+        });
+
+        if (!inserted) throw new Error('Metadaten konnten nicht gespeichert werden');
+
+        // update local state
+        const signed = await createSignedUrl('form_files', objectKey);
+        setStoredFiles(prev => ({ ...prev, [type]: inserted }));
+        setFilePreviews(prev => ({ ...prev, [type]: signed }));
+        setSelectedFiles(prev => ({ ...prev, [type]: null }));
+      }
+    }
+        } catch (error) {
       console.error(error);
       toast.error('Beim Speichern ist ein Fehler aufgetreten.', { position: 'top-center' });
     }
+
   };
 
   // Absenden (final)
@@ -179,11 +273,20 @@ export default function Form() {
     router.push('/dashboard');
   };
 
-  // PDF Download
-  const downloadPdf = () => {
-    window.open(`/api/downloadPdf?id=${id}`, '_blank');
+  // Download einzelner Dateien (öffnet signed URL in neuem Tab)
+  const handleDownload = async (type) => {
+    const entry = storedFiles[type];
+    if (!entry || !entry.object_key) {
+      toast.error('Datei nicht gefunden.');
+      return;
+    }
+    const url = await createSignedUrl(entry.bucket_id || 'form_files', entry.object_key, 60);
+    if (!url) {
+      toast.error('Fehler beim Erstellen der Download-URL.');
+      return;
+    }
+    window.open(url, '_blank');
   };
-
 
   return (
       <>
@@ -596,20 +699,70 @@ export default function Form() {
           Zwischenspeichern
         </StyledButton>
         
-        <StyledFieldset>
-            <legend><h2>6. weitere Projektangaben</h2></legend>
+<StyledFieldset>
+            <legend><h2>6. Dateien (Flächen, Zeichnungen, Sonstiges)</h2></legend>
 
-            {/* Bild hochladen */}
             <div>
-              <label>Bild hochladen:</label>
-              <input type="file" accept="image/*" onChange={handleFileChange} disabled={isReadonly} />
-              {imagePreviewUrl && (
-                <div>
-                  <p>Aktuelles Bild:</p>
-                  <img src={imagePreviewUrl} alt="Formular Bild" width={200} />
-                </div>
-              )}
+              <label>Flächenberechnungen (PDF/Excel):</label>
+              <input
+                type="file"
+                accept=".pdf,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                onChange={(e) => handleFileSelect('calculations', e)}
+                disabled={isReadonly}
+              />
+              {filePreviews.calculations ? (
+                // wenn Bild -> Vorschau, sonst nur Dateiname / Download-Button
+                (filePreviews.calculations.startsWith('blob:') || filePreviews.calculations.startsWith('data:')) ? (
+                  <img src={filePreviews.calculations} alt="Vorschau" width={200} />
+                ) : (
+                  <div>
+                    <p>{storedFiles.calculations?.file_name || selectedFiles.calculations?.name}</p>
+                    {storedFiles.calculations && <button type="button" onClick={() => handleDownload('calculations')}>Download</button>}
+                  </div>
+                )
+              ) : null}
             </div>
+
+            <div>
+              <label>Zeichnungen (DWG/PDF):</label>
+              <input
+                type="file"
+                accept=".dwg,application/pdf"
+                onChange={(e) => handleFileSelect('drawings', e)}
+                disabled={isReadonly}
+              />
+              {filePreviews.drawings ? (
+                (filePreviews.drawings.startsWith('blob:') || filePreviews.drawings.startsWith('data:')) ? (
+                  <img src={filePreviews.drawings} alt="Vorschau" width={200} />
+                ) : (
+                  <div>
+                    <p>{storedFiles.drawings?.file_name || selectedFiles.drawings?.name}</p>
+                    {storedFiles.drawings && <button type="button" onClick={() => handleDownload('drawings')}>Download</button>}
+                  </div>
+                )
+              ) : null}
+            </div>
+
+            <div>
+              <label>Sonstiges (ZIP/Bilder):</label>
+              <input
+                type="file"
+                accept=".zip,image/*"
+                onChange={(e) => handleFileSelect('other', e)}
+                disabled={isReadonly}
+              />
+              {filePreviews.other ? (
+                (filePreviews.other.startsWith('blob:') || filePreviews.other.startsWith('data:')) ? (
+                  <img src={filePreviews.other} alt="Vorschau" width={200} />
+                ) : (
+                  <div>
+                    <p>{storedFiles.other?.file_name || selectedFiles.other?.name}</p>
+                    {storedFiles.other && <button type="button" onClick={() => handleDownload('other')}>Download</button>}
+                  </div>
+                )
+              ) : null}
+            </div>
+
           </StyledFieldset>
         
         {/* Buttons deaktivieren, wenn readonly */}
