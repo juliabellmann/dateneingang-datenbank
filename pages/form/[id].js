@@ -90,15 +90,20 @@ export default function Form() {
   function handleFileChange(e) {
     const f = e.target.files && e.target.files[0] ? e.target.files[0] : null;
     setFile(f);
-    // lokale Vorschau (vor dem Upload)
-    if (f) {
-      const localUrl = URL.createObjectURL(f);
-      setImagePreviewUrl(localUrl);
-    } else {
-      // wenn abgewählt
-      refreshSignedUrl(formData.image_file_path);
-    }
+
+  if (!f) {
+    refreshSignedUrl(formData.image_file_path);
+    return;
   }
+
+  // Vorschau NUR für Bilder
+  if (f.type.startsWith('image/')) {
+    const localUrl = URL.createObjectURL(f);
+    setImagePreviewUrl(localUrl);
+  } else {
+    setImagePreviewUrl(null);
+  }
+}
 
     // Upload ins private Bucket, Pfad = auth.uid()/timestamp-filename
 async function uploadImage(fileToUpload) {
@@ -187,7 +192,34 @@ async function uploadImage(fileToUpload) {
   const downloadPdf = () => {
     window.open(`/api/downloadPdf?id=${id}`, '_blank');
   };
+  
+// Datei herunterladen (über signed URL)
+const handleDownloadFile = async () => {
+  if (!formData.image_file_path) {
+    toast.error('Keine Datei vorhanden.');
+    return;
+  }
 
+  try {
+    const { data, error } = await supabase
+      .storage
+      .from('form_files')
+      .createSignedUrl(formData.image_file_path, 60); // 1 Minute gültig
+
+    if (error) throw error;
+
+    // Download im neuen Tab starten
+    const link = document.createElement('a');
+    link.href = data.signedUrl;
+    link.download = formData.image_file_path.split('/').pop(); // Dateiname
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (err) {
+    console.error(err);
+    toast.error('Download fehlgeschlagen.');
+  }
+};
 
   return (
       <>
@@ -585,15 +617,34 @@ async function uploadImage(fileToUpload) {
 
             {/* Bild hochladen */}
             <div>
-              <label>Bild hochladen:</label>
-              <input type="file" accept="image/*" onChange={handleFileChange} disabled={isReadonly} />
-              {imagePreviewUrl && (
-                <div>
-                  <p>Aktuelles Bild:</p>
-                  <img src={imagePreviewUrl} alt="Formular Bild" width={200} />
-                </div>
-              )}
+              <label>Datei hochladen:</label>
+              {/* Hinweis: wenn man das Format der hochladbaren Datei einschränken möchte: accept="..." */}
+              {/* <input type="file" accept="image/*" onChange={handleFileChange} disabled={isReadonly} /> */}
+              <input type="file" onChange={handleFileChange} disabled={isReadonly} />
+
+          {formData.image_file_path && (
+              <div>
+                <p>Hochgeladene Datei:</p>
+
+                {/* Bildvorschau nur wenn Bild */}
+                {imagePreviewUrl ? (
+                  <img src={imagePreviewUrl} alt="Vorschau" width={200} />
+                ) : (
+                  <p>
+                    {formData.image_file_path.split('/').pop()}
+                  </p>
+                )}
+
+                {/* Download IMMER anzeigen, wenn Datei existiert */}
+                {isReadonly && (
+                  <StyledButton type="button" onClick={handleDownloadFile}>
+                    Datei herunterladen
+                  </StyledButton>
+                )}
+              </div>
+            )}
             </div>
+
           </StyledFieldset>
         
         {/* Buttons deaktivieren, wenn readonly */}
