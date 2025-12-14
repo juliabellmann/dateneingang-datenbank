@@ -14,10 +14,19 @@ export default function Form() {
   const router = useRouter();
   const { id } = router.query;
 
-  // Datei + Bildvorschau (signed URL oder lokale Vorschau)
-  const [file, setFile] = useState(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+const [files, setFiles] = useState({
+  image: null,
+  one: null,
+  two: null,
+  three: null,
+});
 
+const [previews, setPreviews] = useState({
+  image: null,
+  one: null,
+  two: null,
+  three: null,
+});
 
 // hier das neue Formularfeld ergänzen
   const [formData, setFormData] = useState({
@@ -42,27 +51,34 @@ export default function Form() {
     vf: "",
     tf: "",
     bgf: '',
-    image_file_path: null, // <-- Pfad im Storage (privater Bucket)
+    image_file_path: null,
+    upload_one_path: null,
+    upload_two_path: null,
+    upload_three_path: null,
   });
 
   const [isReadonly, setIsReadonly] = useState(false); // ⬅️ Zustand zum Sperren des Formulars
   // Hilfsfunktion: signed URL für bestehendes Bild erzeugen
-  async function refreshSignedUrl(filePath) {
-    if (!filePath) {
-      setImagePreviewUrl(null);
-      return;
-    }
-    const { data, error } = await supabase
-      .storage
-      .from('form_files')
-      .createSignedUrl(filePath, 60 * 10); // 10 Minuten
-    if (error) {
-      console.error('Signed URL Fehler:', error);
-      setImagePreviewUrl(null);
-      return;
-    }
-    setImagePreviewUrl(data.signedUrl);
+  async function refreshSignedUrl(key, filePath) {
+  if (!filePath) {
+    setPreviews(prev => ({ ...prev, [key]: null }));
+    return;
   }
+
+  const { data, error } = await supabase
+    .storage
+    .from('form_files')
+    .createSignedUrl(filePath, 60 * 10);
+
+  if (error) {
+    console.error('Signed URL Fehler:', error);
+    setPreviews(prev => ({ ...prev, [key]: null }));
+    return;
+  }
+
+  setPreviews(prev => ({ ...prev, [key]: data.signedUrl }));
+}
+
 
     // Formular laden
   useEffect(() => {
@@ -80,30 +96,40 @@ export default function Form() {
           if (data) {
             setFormData(prev => ({ ...prev, ...data }));
             if (data.status === 'submitted') setIsReadonly(true);
-            if (data.image_file_path) await refreshSignedUrl(data.image_file_path);
+            if (data.image_file_path)
+              await refreshSignedUrl('image', data.image_file_path);
+
+            if (data.upload_one_path)
+              await refreshSignedUrl('one', data.upload_one_path);
+
+            if (data.upload_two_path)
+              await refreshSignedUrl('two', data.upload_two_path);
+
+            if (data.upload_three_path)
+              await refreshSignedUrl('three', data.upload_three_path);
           }
         });
     }
   }, [id]);
 
     // Datei-Auswahl
-  function handleFileChange(e) {
-    const f = e.target.files && e.target.files[0] ? e.target.files[0] : null;
-    setFile(f);
+  function handleFileChange(key, e) {
+    const f = e.target.files?.[0] || null;
 
-  if (!f) {
-    refreshSignedUrl(formData.image_file_path);
-    return;
-  }
+    setFiles(prev => ({ ...prev, [key]: f }));
 
-  // Vorschau NUR für Bilder
-  if (f.type.startsWith('image/')) {
-    const localUrl = URL.createObjectURL(f);
-    setImagePreviewUrl(localUrl);
-  } else {
-    setImagePreviewUrl(null);
+    if (!f) {
+      setPreviews(prev => ({ ...prev, [key]: null }));
+      return;
+    }
+
+    if (f.type.startsWith('image/')) {
+      const localUrl = URL.createObjectURL(f);
+      setPreviews(prev => ({ ...prev, [key]: localUrl }));
+    } else {
+      setPreviews(prev => ({ ...prev, [key]: null }));
+    }
   }
-}
 
     // Upload ins private Bucket, Pfad = auth.uid()/timestamp-filename
 async function uploadFile(fileToUpload) {
@@ -142,19 +168,29 @@ async function uploadFile(fileToUpload) {
         return;
       }
 
-      let image_file_path = formData.image_file_path;
+      let {
+        image_file_path,
+        upload_one_path,
+        upload_two_path,
+        upload_three_path,
+      } = formData;
 
-      // Falls neue Datei gewählt → hochladen und Pfad übernehmen
-      if (file) {
-        image_file_path = await uploadFile(file);
-      }
+      if (files.image) image_file_path = await uploadFile(files.image);
+      if (files.one) upload_one_path = await uploadFile(files.one);
+      if (files.two) upload_two_path = await uploadFile(files.two);
+      if (files.three) upload_three_path = await uploadFile(files.three);
 
       const payload = {
         ...formData,
         user_id: userRes.user.id,
         status: 'draft',
         image_file_path,
+        upload_one_path,
+        upload_two_path,
+        upload_three_path,
       };
+
+      setFiles({ image: null, one: null, two: null, three: null });
 
       if (id === 'new') {
         const { error: insertErr } = await supabase.from('forms').insert(payload);
@@ -165,11 +201,26 @@ async function uploadFile(fileToUpload) {
         if (updateErr) throw updateErr;
         toast.success('Änderungen wurden gespeichert.', { position: 'top-center' });
       }
+      setFormData(prev => ({
+        ...prev,
+        image_file_path,
+        upload_one_path,
+        upload_two_path,
+        upload_three_path,
+      }));
 
-      // Nach dem Speichern ggf. neue signed URL laden (falls neues Bild)
-      if (image_file_path) await refreshSignedUrl(image_file_path);
-      setFormData(prev => ({ ...prev, image_file_path }));
-      setFile(null);
+      if (image_file_path)
+        await refreshSignedUrl('image', image_file_path);
+
+      if (upload_one_path)
+        await refreshSignedUrl('one', upload_one_path);
+
+      if (upload_two_path)
+        await refreshSignedUrl('two', upload_two_path);
+
+      if (upload_three_path)
+        await refreshSignedUrl('three', upload_three_path);
+
     } catch (error) {
       console.error('handleSave error:', error);
       toast.error(`Beim Speichern ist ein Fehler aufgetreten: ${error?.message || error}`);
@@ -193,9 +244,8 @@ async function uploadFile(fileToUpload) {
     window.open(`/api/downloadPdf?id=${id}`, '_blank');
   };
   
-// Datei herunterladen (über signed URL)
-const handleDownloadFile = async () => {
-  if (!formData.image_file_path) {
+const handleDownloadFile = async (filePath) => {
+  if (!filePath) {
     toast.error('Keine Datei vorhanden.');
     return;
   }
@@ -204,14 +254,13 @@ const handleDownloadFile = async () => {
     const { data, error } = await supabase
       .storage
       .from('form_files')
-      .createSignedUrl(formData.image_file_path, 60); // 1 Minute gültig
+      .createSignedUrl(filePath, 60 * 10);
 
     if (error) throw error;
 
-    // Download im neuen Tab starten
     const link = document.createElement('a');
     link.href = data.signedUrl;
-    link.download = formData.image_file_path.split('/').pop(); // Dateiname
+    link.download = filePath.split('/').pop();
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -612,40 +661,68 @@ const handleDownloadFile = async () => {
           Zwischenspeichern
         </StyledButton>
         
-        <StyledFieldset>
-            <legend><h2>6. weitere Projektangaben</h2></legend>
+<StyledFieldset>
+  <legend><h2>6. weitere Projektangaben</h2></legend>
 
-            {/* Bild hochladen */}
-            <div>
-              <label>Datei hochladen:</label>
-              {/* Hinweis: wenn man das Format der hochladbaren Datei einschränken möchte: accept="..." */}
-              {/* <input type="file" accept="image/*" onChange={handleFileChange} disabled={isReadonly} /> */}
-              <input type="file" onChange={handleFileChange} disabled={isReadonly} />
+  {['image', 'one', 'two', 'three'].map((key) => {
+    const filePath = formData[`${key}_file_path`] || formData[`upload_${key}_path`];
+    const labelMap = {
+      image: 'Upload Hauptdatei',
+      one: 'Upload eins',
+      two: 'Upload zwei',
+      three: 'Upload drei',
+    };
 
-          {formData.image_file_path && (
-              <div>
-                <p>Hochgeladene Datei:</p>
+    return (
+      <div key={key} style={{ marginBottom: '1rem' }}>
+        <label>{labelMap[key]}:</label>
 
-                {/* Bildvorschau nur wenn Bild */}
-                {imagePreviewUrl ? (
-                  <img src={imagePreviewUrl} alt="Vorschau" width={200} />
-                ) : (
-                  <p>
-                    {formData.image_file_path.split('/').pop()}
-                  </p>
-                )}
+        {/* verstecktes File-Input */}
+        <input
+          type="file"
+          id={`file-${key}`}
+          style={{ display: 'none' }}
+          onChange={e => handleFileChange(key, e)}
+          disabled={isReadonly}
+        />
 
-                {/* Download IMMER anzeigen, wenn Datei existiert */}
-                {isReadonly && (
-                  <StyledButton type="button" onClick={handleDownloadFile}>
-                    Datei herunterladen
-                  </StyledButton>
-                )}
-              </div>
-            )}
-            </div>
+        {/* eigener Button */}
+        <StyledButton
+          type="button"
+          onClick={() => document.getElementById(`file-${key}`).click()}
+          disabled={isReadonly}
+        >
+          Datei auswählen
+        </StyledButton>
 
-          </StyledFieldset>
+        {/* Anzeige gewählter Datei oder bestehender Pfad */}
+        <span style={{ marginLeft: '1rem' }}>
+          {files[key]?.name || (filePath ? filePath.split('/').pop() : 'Keine Datei ausgewählt')}
+        </span>
+
+        {/* Vorschau bei Bilddateien */}
+        {previews[key] && (
+          <div style={{ marginTop: '0.5rem' }}>
+            <img src={previews[key]} alt="Vorschau" width={200} />
+          </div>
+        )}
+
+        {/* Download-Button nur bei readonly */}
+        {isReadonly && filePath && (
+          <StyledButton
+            type="button"
+            onClick={() => handleDownloadFile(filePath)}
+            style={{ marginTop: '0.5rem' }}
+          >
+            Datei herunterladen
+          </StyledButton>
+        )}
+      </div>
+    );
+  })}
+</StyledFieldset>
+
+
         
         {/* Buttons deaktivieren, wenn readonly */}
         <StyledButton type="button" onClick={handleSave} disabled={isReadonly}>
