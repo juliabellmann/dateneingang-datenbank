@@ -106,16 +106,16 @@ export default function Form() {
 }
 
     // Upload ins private Bucket, Pfad = auth.uid()/timestamp-filename
-async function uploadImage(fileToUpload) {
+async function uploadFile(fileToUpload) {
   // Prüfe aktuellen User
   const { data: userData, error: userErr } = await supabase.auth.getUser();
-  console.log('uploadImage - auth.getUser result:', userData, userErr);
+  console.log('uploadFile - auth.getUser result:', userData, userErr);
   if (userErr || !userData?.user) throw new Error('Nicht eingeloggt');
   const userId = userData.user.id;
 
   // Baue Dateipfad (wichtig für RLS-Policy wenn Pfad-Check verwendet wird)
   const filePath = `${userId}/${Date.now()}-${fileToUpload.name}`;
-  console.log('uploadImage - filePath:', filePath, 'file type:', fileToUpload.type);
+  console.log('uploadFile - filePath:', filePath, 'file type:', fileToUpload.type);
 
   const { data, error: upErr } = await supabase
     .storage
@@ -126,7 +126,7 @@ async function uploadImage(fileToUpload) {
       contentType: fileToUpload.type,
     });
 
-  console.log('uploadImage - upload result:', { data, upErr });
+  console.log('uploadFile - upload result:', { data, upErr });
   if (upErr) throw upErr;
   return filePath;
 }
@@ -146,7 +146,7 @@ async function uploadImage(fileToUpload) {
 
       // Falls neue Datei gewählt → hochladen und Pfad übernehmen
       if (file) {
-        image_file_path = await uploadImage(file);
+        image_file_path = await uploadFile(file);
       }
 
       const payload = {
