@@ -54,7 +54,7 @@ export default function Form() {
     }
     const { data, error } = await supabase
       .storage
-      .from('form-images')
+      .from('form_files')
       .createSignedUrl(filePath, 60 * 10); // 10 Minuten
     if (error) {
       console.error('Signed URL Fehler:', error);
@@ -101,25 +101,30 @@ export default function Form() {
   }
 
     // Upload ins private Bucket, Pfad = auth.uid()/timestamp-filename
-  async function uploadImage(fileToUpload) {
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr || !userData?.user) throw new Error('Nicht eingeloggt');
-    const userId = userData.user.id;
+async function uploadImage(fileToUpload) {
+  // Prüfe aktuellen User
+  const { data: userData, error: userErr } = await supabase.auth.getUser();
+  console.log('uploadImage - auth.getUser result:', userData, userErr);
+  if (userErr || !userData?.user) throw new Error('Nicht eingeloggt');
+  const userId = userData.user.id;
 
-    const filePath = `${userId}/${Date.now()}-${fileToUpload.name}`;
+  // Baue Dateipfad (wichtig für RLS-Policy wenn Pfad-Check verwendet wird)
+  const filePath = `${userId}/${Date.now()}-${fileToUpload.name}`;
+  console.log('uploadImage - filePath:', filePath, 'file type:', fileToUpload.type);
 
-    const { error: upErr } = await supabase
-      .storage
-      .from('form-images')
-      .upload(filePath, fileToUpload, {
-        cacheControl: '3600',
-        upsert: false,
-        contentType: fileToUpload.type,
-      });
+  const { data, error: upErr } = await supabase
+    .storage
+    .from('form_files')
+    .upload(filePath, fileToUpload, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: fileToUpload.type,
+    });
 
-    if (upErr) throw upErr;
-    return filePath;
-  }
+  console.log('uploadImage - upload result:', { data, upErr });
+  if (upErr) throw upErr;
+  return filePath;
+}
 
     // Speichern (Zwischenspeichern / Aktualisieren)
    const handleSave = async () => {
@@ -161,8 +166,8 @@ export default function Form() {
       setFormData(prev => ({ ...prev, image_file_path }));
       setFile(null);
     } catch (error) {
-      console.error(error);
-      toast.error('Beim Speichern ist ein Fehler aufgetreten.', { position: 'top-center' });
+      console.error('handleSave error:', error);
+      toast.error(`Beim Speichern ist ein Fehler aufgetreten: ${error?.message || error}`);
     }
   };
 
