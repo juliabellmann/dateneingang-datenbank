@@ -270,6 +270,15 @@ const handleDownloadFile = async (filePath) => {
   }
 };
 
+const getDisplayFileName = (path) => {
+  if (!path) return '';
+
+  const fileName = path.split('/').pop();
+
+  // entfernt führende Zahlen + _ oder -
+  return fileName.replace(/^\d+[_-]/, '');
+};
+
   return (
       <>
     <StyledSite>
@@ -696,9 +705,15 @@ const handleDownloadFile = async (filePath) => {
         </StyledButton>
 
         {/* Anzeige gewählter Datei oder bestehender Pfad */}
-        <span style={{ marginLeft: '1rem' }}>
-          {files[key]?.name || (filePath ? filePath.split('/').pop() : 'Keine Datei ausgewählt')}
-        </span>
+<span style={{ marginLeft: '1rem' }}>
+  {files[key]?.name || (filePath ? getDisplayFileName(filePath) : 'Keine Datei ausgewählt')}
+  {filePath && (
+    <small style={{ marginLeft: '0.5rem', color: '#666' }}>
+      ({filePath.split('.').pop().toUpperCase()})
+    </small>
+  )}
+</span>
+
 
         {/* Vorschau bei Bilddateien */}
         {previews[key] && (
