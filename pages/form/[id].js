@@ -31,25 +31,60 @@ export default function Form() {
 
   // hier das neue Formularfeld ergänzen
   const [formData, setFormData] = useState({
+    status: "draft",
+
+    objektbezeichnung: "",
+    bauherr: "",
+
     street: "",
     housenumber: "",
-    city: "",
     postalcode: "",
+    city: "",
     landkreis: "",
     bundesland: "",
-    region: "",
-    konjunktur: "",
-    standard: "",
-    status: "draft",
-    objektbezeichnung: "",
-    baubeginn: "",
-    bauende: "",
+
     planungsbeginn: "",
     vergabedatum: "",
+    baubeginn: "",
+    bauende: "",
+
+    fotograf: "",
+    
+    NE_buero: "",
+    NE_institut: "",
+    NE_krankenhaus: "",
+    NE_pflegeheim: "",
+    NE_schule_schueler: "",
+    NE_schule_klassen: "",
+    NE_kindergarten_kinder: "",
+    NE_kindergarten_gruppen: "",
+    NE_wohngebaude: "",
+    NE_heim: "",
+    NE_versammlungsgebauede: "",
+    NE_gaststaette: "",
+    NE_hotel: "",
+    NE_laborgebaeude: "",
+    NE_produktionsstaette: "",
+    NE_feuerwache: "",
+    NE_parkhaus: "",
+    NE_sonst_anz: "",
+
+    UGs_anz: "",
+    UGs_beschreibung: "",
+    EGs_anz: "",
+    EGs_beschreibung: "",
+    OGs_anz: "",
+    OGs_beschreibung: "",
+    DGs_anz: "",
+    DGs_beschreibung: "",
+    
     allgemeine_objektinformation: "",
     baukonstruktion: "",
     technische_anlagen: "",
     beschreibung_sonstiges: "",
+    region: "",
+    konjunktur: "",
+    standard: "",
     nuf: "",
     vf: "",
     tf: "",
@@ -478,17 +513,255 @@ export default function Form() {
                 readOnly={isReadonly}
               />
             </div>
+            <p>* Hinweis: wenn der genaue Tag der Vergabe nicht bekannt ist, geben Sie bitte den 1. Tag des jeweiligen Monats an.</p>
             <p> Copyrights für die Fotos: </p>
             <div className="spacebetween">
               <label htmlFor="fotograf">Copyright liegt bei: </label>
               <input
                 id="fotograf"
-                placeholder="Architekt oder professionellem Fotograf"
+                placeholder="Architekt oder Name des prof. Fotograf"
                 value={formData.fotograf}
                 onChange={(e) =>
                   setFormData({ ...formData, fotograf: e.target.value })
                 }
                 readOnly={isReadonly}
+              />
+            </div>
+
+            <h3>Nutzeinheiten</h3>
+            <div className="spacebetween">
+              <label htmlFor="NE_buero">Bürogebäude - Anzahl Arbeitsplätze: </label>
+              <input
+                type="number"
+                id="NE_buero"
+                step="1"
+                min="0"
+                value={formData.NE_buero}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_buero: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_institut">Institutsgebäude - Anzahl Arbeitsplätze: </label>
+              <input
+                type="number"
+                id="NE_institut"
+                step="1"
+                min="0"
+                value={formData.NE_institut}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_institut: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_krankenhaus">Krankenhaus - Anzahl Betten: </label>
+              <input
+                type="number"
+                id="NE_krankenhaus"
+                step="1"
+                min="0"
+                value={formData.NE_krankenhaus}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_krankenhaus: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_pflegeheim">Pflegeheim - Anzahl Betten: </label>
+              <input
+                type="number"
+                id="NE_pflegeheim"
+                step="1"
+                min="0"
+                value={formData.NE_pflegeheim}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_pflegeheim: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_schule_schueler">Schule - Anzahl Schüler: </label>
+              <input
+                type="number"
+                id="NE_schule_schueler"
+                step="1"
+                min="0"
+                value={formData.NE_schule_schueler}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_schule_schueler: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_schule_klassen">Schule - Anzahl Klassen: </label>
+              <input
+                type="number"
+                id="NE_schule_klassen"
+                step="1"
+                min="0"
+                value={formData.NE_schule_klassen}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_schule_klassen: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_kindergarten_kinder">Kindergarten - Anzahl Kinder: </label>
+              <input
+                type="number"
+                id="NE_kindergarten_kinder"
+                step="1"
+                min="0"
+                value={formData.NE_kindergarten_kinder}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_kindergarten_kinder: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_kindergarten_gruppen">Kindergarten - Anzahl Gruppen: </label>
+              <input
+                type="number"
+                id="NE_kindergarten_gruppen"
+                step="1"
+                min="0"
+                value={formData.NE_kindergarten_gruppen}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_kindergarten_gruppen: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_wohngebaude">Wohngebäude - Anzahl Wohneinheiten: </label>
+              <input
+                type="number"
+                id="NE_wohngebaude"
+                step="1"
+                min="0"
+                value={formData.NE_wohngebaude}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_wohngebaude: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_heim">Heim - Anzahl Betten: </label>
+              <input
+                type="number"
+                id="NE_heim"
+                step="1"
+                min="0"
+                value={formData.NE_heim}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_heim: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_versammlungsgebauede">Versammlungsgebäude - Anzahl Sitzplätze: </label>
+              <input
+                type="number"
+                id="NE_versammlungsgebauede"
+                step="1"
+                min="0"
+                value={formData.NE_versammlungsgebauede}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_versammlungsgebauede: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_gaststaette">Gaststätte - Anzahl Sitzplätze: </label>
+              <input
+                type="number"
+                id="NE_gaststaette"
+                step="1"
+                min="0"
+                value={formData.NE_gaststaette}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_gaststaette: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_hotel">Gaststätte - Anzahl Betten: </label>
+              <input
+                type="number"
+                id="NE_hotel"
+                step="1"
+                min="0"
+                value={formData.NE_hotel}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_hotel: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_laborgebaeude">Laborgebäude - Anzahl Arbeitsplätze: </label>
+              <input
+                type="number"
+                id="NE_laborgebaeude"
+                step="1"
+                min="0"
+                value={formData.NE_laborgebaeude}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_laborgebaeude: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_produktionsstaette">Produktionsstätte - Anzahl Arbeitsplätze: </label>
+              <input
+                type="number"
+                id="NE_produktionsstaette"
+                step="1"
+                min="0"
+                value={formData.NE_produktionsstaette}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_produktionsstaette: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_feuerwache">Feuerwache - Anzahl Fahrzeugplätze: </label>
+              <input
+                type="number"
+                id="NE_feuerwache"
+                step="1"
+                min="0"
+                value={formData.NE_feuerwache}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_feuerwache: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_parkhaus">Parkhaus / Garage - Anzahl Stellplätze: </label>
+              <input
+                type="number"
+                id="NE_parkhaus"
+                step="1"
+                min="0"
+                value={formData.NE_parkhaus}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_parkhaus: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="NE_sonst_anz">Sonstiges - Anzahl Nutzeinheit: </label>
+              {/* Inputs für Sonstiges etc ergänzen */}
+              <input
+                type="number"
+                id="NE_sonst_anz"
+                step="1"
+                min="0"
+                value={formData.NE_sonst_anz}
+                onChange={(e) =>
+                  setFormData({ ...formData, NE_sonst_anz: e.target.value })
+                }
               />
             </div>
           </StyledFieldset>
@@ -505,6 +778,138 @@ export default function Form() {
             <legend>
               <h2>2. Objektbeschreibung</h2>
             </legend>
+
+            <div className="spacebetween">
+              <label htmlFor="UGs_anz">Anzahl der UG(s): </label>
+              {/* Inputs für Sonstiges etc ergänzen */}
+              <input
+                type="number"
+                id="UGs_anz"
+                step="1"
+                min="0"
+                value={formData.UGs_anz}
+                onChange={(e) =>
+                  setFormData({ ...formData, UGs_anz: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="UGs_beschreibung">
+                Beschreibung der UG(s):
+              </label>
+              <textarea
+                id="UGs_beschreibung"
+                placeholder="Beschreibe die Untergeschosse hier..."
+                value={formData.UGs_beschreibung}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    UGs_beschreibung: e.target.value,
+                  })
+                }
+                readOnly={isReadonly}
+                rows={5}
+              />
+            </div>
+
+            <div className="spacebetween">
+              <label htmlFor="EGs_anz">Anzahl der EG(s): </label>
+              {/* Inputs für Sonstiges etc ergänzen */}
+              <input
+                type="number"
+                id="EGs_anz"
+                step="1"
+                min="0"
+                value={formData.EGs_anz}
+                onChange={(e) =>
+                  setFormData({ ...formData, EGs_anz: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="EGs_beschreibung">
+                Beschreibung der EG(s):
+              </label>
+              <textarea
+                id="EGs_beschreibung"
+                placeholder="Beschreibe die Untergeschosse hier..."
+                value={formData.EGs_beschreibung}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    EGs_beschreibung: e.target.value,
+                  })
+                }
+                readOnly={isReadonly}
+                rows={5}
+              />
+            </div>
+
+            <div className="spacebetween">
+              <label htmlFor="OGs_anz">Anzahl der OG(s): </label>
+              {/* Inputs für Sonstiges etc ergänzen */}
+              <input
+                type="number"
+                id="OGs_anz"
+                step="1"
+                min="0"
+                value={formData.OGs_anz}
+                onChange={(e) =>
+                  setFormData({ ...formData, OGs_anz: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="OGs_beschreibung">
+                Beschreibung der OG(s):
+              </label>
+              <textarea
+                id="OGs_beschreibung"
+                placeholder="Beschreibe die Untergeschosse hier..."
+                value={formData.OGs_beschreibung}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    OGs_beschreibung: e.target.value,
+                  })
+                }
+                readOnly={isReadonly}
+                rows={5}
+              />
+            </div>
+
+            <div className="spacebetween">
+              <label htmlFor="DGs_anz">Anzahl der DG(s): </label>
+              {/* Inputs für Sonstiges etc ergänzen */}
+              <input
+                type="number"
+                id="DGs_anz"
+                step="1"
+                min="0"
+                value={formData.DGs_anz}
+                onChange={(e) =>
+                  setFormData({ ...formData, DGs_anz: e.target.value })
+                }
+              />
+            </div>
+            <div className="spacebetween">
+              <label htmlFor="DGs_beschreibung">
+                Beschreibung der DG(s):
+              </label>
+              <textarea
+                id="DGs_beschreibung"
+                placeholder="Beschreibe die Untergeschosse hier..."
+                value={formData.DGs_beschreibung}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    DGs_beschreibung: e.target.value,
+                  })
+                }
+                readOnly={isReadonly}
+                rows={5}
+              />
+            </div>
 
             <div className="spacebetween">
               <label htmlFor="allgemeine_objektinformation">
@@ -592,6 +997,7 @@ export default function Form() {
             </legend>
 
             <h3>Region</h3>
+            <p>Die Zuordnung sinngemäß vornehmen, z. B. Großstadt auch dann ankreuzen, wenn der Standort des Objekts zwar eine nichtstädtische Gemeinde (Land) ist, die aber im Hinblick auf die Angebotssituation für Bauleistungen im Einzugsgebiet einer Großstadt liegt.</p>
             <StyledRadiobuttons>
               <label>
                 <input
@@ -635,6 +1041,7 @@ export default function Form() {
             </StyledRadiobuttons>
 
             <h3>Konjunktur</h3>
+            <p>Ihre Einschätzung zum Zeitpunkt der Hauptvergaben: schwach = Rezessionsphase, sehr günstige Angebote; mittel = durchschnittliche Angebotssituation; hoch = Hochkonjunktur, große Baunachfrage, relativ hohe Angebotspreise.</p>
             <StyledRadiobuttons>
               <label>
                 <input
