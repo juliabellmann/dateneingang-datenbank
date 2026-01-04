@@ -911,10 +911,11 @@ export default function Form() {
               />
             </div>
 
-            <div className="spacebetween">
+            <div className="spacebetween-info">
               <label htmlFor="allgemeine_objektinformation">
                 Allgemeine Objektinformation:
               </label>
+              <StyledFieldTooltip>
               <textarea
                 id="allgemeine_objektinformation"
                 placeholder="Beschreibe das Objekt hier..."
@@ -927,12 +928,14 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
                 rows={5}
-              />
+                />
               <InfoTooltip text="zusätzliche Objektinformationen. - Beispieltext: Die Bauherren hatten sich Referenzobjekte des Architekturbüros angesehen. Sie realisierten die Reihenhäuser in Passivhausbauweise als Bauträger und verkauften sie nach ihrer Fertigstellung." />
+                </StyledFieldTooltip>
             </div>
 
-            <div className="spacebetween">
+            <div className="spacebetween-info">
               <label htmlFor="baukonstruktion">Baukonstruktion:</label>
+              <StyledFieldTooltip>
               <textarea
                 id="baukonstruktion"
                 placeholder="Beschreibe das Objekt hier..."
@@ -942,12 +945,15 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
                 rows={5}
-              />
+                />
               <InfoTooltip text="zusätzliche Informationen zur Baukonstruktion als Ergänzung zur Beschreibung der Kosten nach DIN 276. - Beispieltext: Es wurde die Holzbauweise gewählt. Da bei ihr Dämm- und Konstruktionsebene zusammenfallen, sind die Außenwände schlanker und somit wirtschaftlicher als beim Massivbau. Die Holztafeln mit thermisch entkoppelten Holzprofilen wurden vorproduziert. Durch die hohe Planungs- und Ausführungsgenauigkeit konnten parallel zu den Tafeln bspw. die Fenster gefertigt werden. Dadurch dauerte die Bauzeit für alle Häuser zehn Monate." />
+                </StyledFieldTooltip>
             </div>
 
-            <div className="spacebetween">
+            <div className="spacebetween-info">
               <label htmlFor="technische_anlagen">Technische Anlagen: </label>
+              <StyledFieldTooltip>
+
               <textarea
                 id="technische_anlagen"
                 placeholder="Beschreibe das Objekt hier..."
@@ -960,12 +966,15 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
                 rows={5}
-              />
+                />
               <InfoTooltip text="zusätzliche Informationen zur Baukonstruktion als Ergänzung zur Beschreibung der Kosten nach DIN 276. - Beispieltext: Zwar wurden Varianten für die Energieversorgung berechnet, dennoch musste das Passivhaus an Fernwärme angeschlossen werden. Sie wird an einen gemeinsamen Speicher übergeben, an den auch Flachkollektoren angeschlossen sind. Um eine Nachrüstung von Photovoltaikelementen zu vereinfachen, wurden Leerrohre verlegt. Jede Wohnung erhielt eine Zu- und Abluftanlage mit Wärmerückgewinnung. Die Luftdichtheit der Gebäude wurde mit einem Blower-Door-Test geprüft. Die passivhaustauglichen Holz-Aluminium-Fenster mit Dreifachverglasung sind zudem hoch schalldämmend." />
+                </StyledFieldTooltip>
             </div>
 
-            <div className="spacebetween">
+            <div className="spacebetween-info">
               <label htmlFor="beschreibung_sonstiges">Sonstiges: </label>
+              <StyledFieldTooltip>
+
               <textarea
                 id="beschreibung_sonstiges"
                 placeholder="Beschreibe das Objekt hier..."
@@ -978,9 +987,11 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
                 rows={5}
-              />
+                />
               <InfoTooltip text="zusätzliche interessante Informationen zum Objekt - Beispieltext: Der kompakte Baukörper hat eine weinrote Holzfassade und ein hellgraues Staffelgeschoss. Auf der Nordseite wurden neben den Fenstern rückseitig lackierte Gläser eingesetzt. Sie lassen die Fensterformate breiter erscheinen, während innen flexibel möbliert werden kann. Die Holzinnendecken wurden weiß lasiert. Als weiteres Gestaltungselement wurden in den Treppenaugen Regale eingebaut. Den Vorbereich prägen optisch abgetrennte Carports und ein Holzsteg unter einem Glasvordach. Der Bereich hinter dem Haus wurde mit Erde angefüllt und erhielt eine Gartenanlage mit einer Trockenmauer." />
+                </StyledFieldTooltip>
             </div>
+
           </StyledFieldset>
 
           <StyledButton
@@ -1390,9 +1401,16 @@ const StyledButton = styled.button`
 const StyledRadiobuttons = styled.div`
   // background-color: green;
   display: flex;
-  flex-direction: row;
+  justify-content: center;
   gap: 1.5rem;
+
+  label {
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 150px;
+  }
 `;
 
 const StyledBackButton = styled.button`
@@ -1406,4 +1424,10 @@ const StyledBackButton = styled.button`
   &:hover {
     background-color: #555;
   }
+`;
+
+const StyledFieldTooltip = styled.div`
+min-width: 400px;
+
+display: flex;
 `;
