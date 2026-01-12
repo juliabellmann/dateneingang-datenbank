@@ -1151,7 +1151,7 @@ export default function Form() {
             <legend>
               <h2>4. Flächen und Rauminhalte nach DIN 277:2021-08</h2>
             </legend>
-            <div>
+            <div className="spacebetween">
               <label htmlFor="nuf">Nutzungsflächen: </label>
               <input
                 type="number"
@@ -1164,7 +1164,7 @@ export default function Form() {
                 }
               />
             </div>
-            <div>
+            <div className="spacebetween">
               <label htmlFor="tf">Technikfläche: </label>
               <input
                 type="number"
@@ -1177,7 +1177,7 @@ export default function Form() {
                 }
               />
             </div>
-            <div>
+            <div className="spacebetween">
               <label htmlFor="vf">Verkehrsfläche: </label>
               <input
                 type="number"
@@ -1190,7 +1190,7 @@ export default function Form() {
                 }
               />
             </div>
-            <div>
+            <div className="spacebetween">
               <label htmlFor="bgf">Brutto-Grundfläche: </label>
               <input
                 type="number"
@@ -1204,22 +1204,24 @@ export default function Form() {
               />
             </div>
 
-            <div>
+            <div className="spacebetween">
               <span>Netto-Raumfläche: </span>
-              <span>
-                {[
-                  // verhindert NaN bei leeren Feldern:
-                  parseFloat(formData.nuf) || 0,
-                  parseFloat(formData.vf) || 0,
-                  parseFloat(formData.tf) || 0,
-                  parseFloat(formData.bgf) || 0,
-                ]
+              <div>
+                <span>
+                  {[
+                    // verhindert NaN bei leeren Feldern:
+                    parseFloat(formData.nuf) || 0,
+                    parseFloat(formData.vf) || 0,
+                    parseFloat(formData.tf) || 0,
+                    parseFloat(formData.bgf) || 0,
+                  ]
                   // summieren von Zahlen:
                   .reduce((a, b) => a + b, 0)
                   .toFixed(2)
                   .replace(".", ",")}
-              </span>
-              <span> m²</span>
+                </span>
+                <span> m²</span>
+              </div>
             </div>
           </StyledFieldset>
 
@@ -1261,7 +1263,7 @@ export default function Form() {
               };
 
               return (
-                <div key={key} style={{ marginBottom: "1rem" }}>
+                <StyledUploads key={key}>
                   <label>{labelMap[key]}:</label>
 
                   {/* verstecktes File-Input */}
@@ -1314,7 +1316,11 @@ export default function Form() {
                       Datei herunterladen
                     </StyledButton>
                   )}
-                </div>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+
+                </StyledUploads>
               );
             })}
           </StyledFieldset>
@@ -1430,4 +1436,9 @@ const StyledFieldTooltip = styled.div`
 min-width: 400px;
 
 display: flex;
+`;
+
+const StyledUploads = styled.div`
+display: flex;
+flex-direction: column;
 `;
