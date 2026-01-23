@@ -49,7 +49,7 @@ export default function Form() {
     bauende: "",
 
     fotograf: "",
-    
+
     NE_buero: "",
     NE_institut: "",
     NE_krankenhaus: "",
@@ -77,7 +77,7 @@ export default function Form() {
     OGs_beschreibung: "",
     DGs_anz: "",
     DGs_beschreibung: "",
-    
+
     allgemeine_objektinformation: "",
     baukonstruktion: "",
     technische_anlagen: "",
@@ -181,7 +181,7 @@ export default function Form() {
       "uploadFile - filePath:",
       filePath,
       "file type:",
-      fileToUpload.type
+      fileToUpload.type,
     );
 
     const { data, error: upErr } = await supabase.storage
@@ -268,7 +268,7 @@ export default function Form() {
     } catch (error) {
       console.error("handleSave error:", error);
       toast.error(
-        `Beim Speichern ist ein Fehler aufgetreten: ${error?.message || error}`
+        `Beim Speichern ist ein Fehler aufgetreten: ${error?.message || error}`,
       );
     }
   };
@@ -513,7 +513,10 @@ export default function Form() {
                 readOnly={isReadonly}
               />
             </div>
-            <p>* Hinweis: wenn der genaue Tag der Vergabe nicht bekannt ist, geben Sie bitte den 1. Tag des jeweiligen Monats an.</p>
+            <p>
+              * Hinweis: wenn der genaue Tag der Vergabe nicht bekannt ist,
+              geben Sie bitte den 1. Tag des jeweiligen Monats an.
+            </p>
             <p> Copyrights für die Fotos: </p>
             <div className="spacebetween">
               <label htmlFor="fotograf">Copyright liegt bei: </label>
@@ -530,7 +533,9 @@ export default function Form() {
 
             <h3>Nutzeinheiten</h3>
             <div className="spacebetween">
-              <label htmlFor="NE_buero">Bürogebäude - Anzahl Arbeitsplätze: </label>
+              <label htmlFor="NE_buero">
+                Bürogebäude - Anzahl Arbeitsplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_buero"
@@ -543,7 +548,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_institut">Institutsgebäude - Anzahl Arbeitsplätze: </label>
+              <label htmlFor="NE_institut">
+                Institutsgebäude - Anzahl Arbeitsplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_institut"
@@ -556,7 +563,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_krankenhaus">Krankenhaus - Anzahl Betten: </label>
+              <label htmlFor="NE_krankenhaus">
+                Krankenhaus - Anzahl Betten:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_krankenhaus"
@@ -569,7 +578,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_pflegeheim">Pflegeheim - Anzahl Betten: </label>
+              <label htmlFor="NE_pflegeheim">
+                Pflegeheim - Anzahl Betten:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_pflegeheim"
@@ -582,7 +593,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_schule_schueler">Schule - Anzahl Schüler: </label>
+              <label htmlFor="NE_schule_schueler">
+                Schule - Anzahl Schüler:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_schule_schueler"
@@ -590,12 +603,17 @@ export default function Form() {
                 min="0"
                 value={formData.NE_schule_schueler}
                 onChange={(e) =>
-                  setFormData({ ...formData, NE_schule_schueler: e.target.value })
+                  setFormData({
+                    ...formData,
+                    NE_schule_schueler: e.target.value,
+                  })
                 }
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_schule_klassen">Schule - Anzahl Klassen: </label>
+              <label htmlFor="NE_schule_klassen">
+                Schule - Anzahl Klassen:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_schule_klassen"
@@ -603,12 +621,17 @@ export default function Form() {
                 min="0"
                 value={formData.NE_schule_klassen}
                 onChange={(e) =>
-                  setFormData({ ...formData, NE_schule_klassen: e.target.value })
+                  setFormData({
+                    ...formData,
+                    NE_schule_klassen: e.target.value,
+                  })
                 }
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_kindergarten_kinder">Kindergarten - Anzahl Kinder: </label>
+              <label htmlFor="NE_kindergarten_kinder">
+                Kindergarten - Anzahl Kinder:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_kindergarten_kinder"
@@ -616,12 +639,17 @@ export default function Form() {
                 min="0"
                 value={formData.NE_kindergarten_kinder}
                 onChange={(e) =>
-                  setFormData({ ...formData, NE_kindergarten_kinder: e.target.value })
+                  setFormData({
+                    ...formData,
+                    NE_kindergarten_kinder: e.target.value,
+                  })
                 }
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_kindergarten_gruppen">Kindergarten - Anzahl Gruppen: </label>
+              <label htmlFor="NE_kindergarten_gruppen">
+                Kindergarten - Anzahl Gruppen:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_kindergarten_gruppen"
@@ -629,12 +657,17 @@ export default function Form() {
                 min="0"
                 value={formData.NE_kindergarten_gruppen}
                 onChange={(e) =>
-                  setFormData({ ...formData, NE_kindergarten_gruppen: e.target.value })
+                  setFormData({
+                    ...formData,
+                    NE_kindergarten_gruppen: e.target.value,
+                  })
                 }
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_wohngebaude">Wohngebäude - Anzahl Wohneinheiten: </label>
+              <label htmlFor="NE_wohngebaude">
+                Wohngebäude - Anzahl Wohneinheiten:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_wohngebaude"
@@ -660,7 +693,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_versammlungsgebauede">Versammlungsgebäude - Anzahl Sitzplätze: </label>
+              <label htmlFor="NE_versammlungsgebauede">
+                Versammlungsgebäude - Anzahl Sitzplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_versammlungsgebauede"
@@ -668,12 +703,17 @@ export default function Form() {
                 min="0"
                 value={formData.NE_versammlungsgebauede}
                 onChange={(e) =>
-                  setFormData({ ...formData, NE_versammlungsgebauede: e.target.value })
+                  setFormData({
+                    ...formData,
+                    NE_versammlungsgebauede: e.target.value,
+                  })
                 }
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_gaststaette">Gaststätte - Anzahl Sitzplätze: </label>
+              <label htmlFor="NE_gaststaette">
+                Gaststätte - Anzahl Sitzplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_gaststaette"
@@ -699,7 +739,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_laborgebaeude">Laborgebäude - Anzahl Arbeitsplätze: </label>
+              <label htmlFor="NE_laborgebaeude">
+                Laborgebäude - Anzahl Arbeitsplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_laborgebaeude"
@@ -712,7 +754,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_produktionsstaette">Produktionsstätte - Anzahl Arbeitsplätze: </label>
+              <label htmlFor="NE_produktionsstaette">
+                Produktionsstätte - Anzahl Arbeitsplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_produktionsstaette"
@@ -720,12 +764,17 @@ export default function Form() {
                 min="0"
                 value={formData.NE_produktionsstaette}
                 onChange={(e) =>
-                  setFormData({ ...formData, NE_produktionsstaette: e.target.value })
+                  setFormData({
+                    ...formData,
+                    NE_produktionsstaette: e.target.value,
+                  })
                 }
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_feuerwache">Feuerwache - Anzahl Fahrzeugplätze: </label>
+              <label htmlFor="NE_feuerwache">
+                Feuerwache - Anzahl Fahrzeugplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_feuerwache"
@@ -738,7 +787,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_parkhaus">Parkhaus / Garage - Anzahl Stellplätze: </label>
+              <label htmlFor="NE_parkhaus">
+                Parkhaus / Garage - Anzahl Stellplätze:{" "}
+              </label>
               <input
                 type="number"
                 id="NE_parkhaus"
@@ -751,7 +802,9 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="NE_sonst_anz">Sonstiges - Anzahl Nutzeinheit: </label>
+              <label htmlFor="NE_sonst_anz">
+                Sonstiges - Anzahl Nutzeinheit:{" "}
+              </label>
               {/* Inputs für Sonstiges etc ergänzen */}
               <input
                 type="number"
@@ -794,9 +847,7 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="UGs_beschreibung">
-                Beschreibung der UG(s):
-              </label>
+              <label htmlFor="UGs_beschreibung">Beschreibung der UG(s):</label>
               <textarea
                 id="UGs_beschreibung"
                 placeholder="Beschreibe die Untergeschosse hier..."
@@ -827,9 +878,7 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="EGs_beschreibung">
-                Beschreibung der EG(s):
-              </label>
+              <label htmlFor="EGs_beschreibung">Beschreibung der EG(s):</label>
               <textarea
                 id="EGs_beschreibung"
                 placeholder="Beschreibe die Untergeschosse hier..."
@@ -860,9 +909,7 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="OGs_beschreibung">
-                Beschreibung der OG(s):
-              </label>
+              <label htmlFor="OGs_beschreibung">Beschreibung der OG(s):</label>
               <textarea
                 id="OGs_beschreibung"
                 placeholder="Beschreibe die Untergeschosse hier..."
@@ -893,9 +940,7 @@ export default function Form() {
               />
             </div>
             <div className="spacebetween">
-              <label htmlFor="DGs_beschreibung">
-                Beschreibung der DG(s):
-              </label>
+              <label htmlFor="DGs_beschreibung">Beschreibung der DG(s):</label>
               <textarea
                 id="DGs_beschreibung"
                 placeholder="Beschreibe die Untergeschosse hier..."
@@ -916,82 +961,82 @@ export default function Form() {
                 Allgemeine Objektinformation:
               </label>
               <StyledFieldTooltip>
-              <textarea
-                id="allgemeine_objektinformation"
-                placeholder="Beschreibe das Objekt hier..."
-                value={formData.allgemeine_objektinformation}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    allgemeine_objektinformation: e.target.value,
-                  })
-                }
-                readOnly={isReadonly}
-                rows={5}
+                <textarea
+                  id="allgemeine_objektinformation"
+                  placeholder="Beschreibe das Objekt hier..."
+                  value={formData.allgemeine_objektinformation}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      allgemeine_objektinformation: e.target.value,
+                    })
+                  }
+                  readOnly={isReadonly}
+                  rows={5}
                 />
-              <InfoTooltip text="zusätzliche Objektinformationen. - Beispieltext: Die Bauherren hatten sich Referenzobjekte des Architekturbüros angesehen. Sie realisierten die Reihenhäuser in Passivhausbauweise als Bauträger und verkauften sie nach ihrer Fertigstellung." />
-                </StyledFieldTooltip>
+                <InfoTooltip text="zusätzliche Objektinformationen. - Beispieltext: Die Bauherren hatten sich Referenzobjekte des Architekturbüros angesehen. Sie realisierten die Reihenhäuser in Passivhausbauweise als Bauträger und verkauften sie nach ihrer Fertigstellung." />
+              </StyledFieldTooltip>
             </div>
 
             <div className="spacebetween-info">
               <label htmlFor="baukonstruktion">Baukonstruktion:</label>
               <StyledFieldTooltip>
-              <textarea
-                id="baukonstruktion"
-                placeholder="Beschreibe das Objekt hier..."
-                value={formData.baukonstruktion}
-                onChange={(e) =>
-                  setFormData({ ...formData, baukonstruktion: e.target.value })
-                }
-                readOnly={isReadonly}
-                rows={5}
+                <textarea
+                  id="baukonstruktion"
+                  placeholder="Beschreibe das Objekt hier..."
+                  value={formData.baukonstruktion}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      baukonstruktion: e.target.value,
+                    })
+                  }
+                  readOnly={isReadonly}
+                  rows={5}
                 />
-              <InfoTooltip text="zusätzliche Informationen zur Baukonstruktion als Ergänzung zur Beschreibung der Kosten nach DIN 276. - Beispieltext: Es wurde die Holzbauweise gewählt. Da bei ihr Dämm- und Konstruktionsebene zusammenfallen, sind die Außenwände schlanker und somit wirtschaftlicher als beim Massivbau. Die Holztafeln mit thermisch entkoppelten Holzprofilen wurden vorproduziert. Durch die hohe Planungs- und Ausführungsgenauigkeit konnten parallel zu den Tafeln bspw. die Fenster gefertigt werden. Dadurch dauerte die Bauzeit für alle Häuser zehn Monate." />
-                </StyledFieldTooltip>
+                <InfoTooltip text="zusätzliche Informationen zur Baukonstruktion als Ergänzung zur Beschreibung der Kosten nach DIN 276. - Beispieltext: Es wurde die Holzbauweise gewählt. Da bei ihr Dämm- und Konstruktionsebene zusammenfallen, sind die Außenwände schlanker und somit wirtschaftlicher als beim Massivbau. Die Holztafeln mit thermisch entkoppelten Holzprofilen wurden vorproduziert. Durch die hohe Planungs- und Ausführungsgenauigkeit konnten parallel zu den Tafeln bspw. die Fenster gefertigt werden. Dadurch dauerte die Bauzeit für alle Häuser zehn Monate." />
+              </StyledFieldTooltip>
             </div>
 
             <div className="spacebetween-info">
               <label htmlFor="technische_anlagen">Technische Anlagen: </label>
               <StyledFieldTooltip>
-
-              <textarea
-                id="technische_anlagen"
-                placeholder="Beschreibe das Objekt hier..."
-                value={formData.technische_anlagen}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    technische_anlagen: e.target.value,
-                  })
-                }
-                readOnly={isReadonly}
-                rows={5}
+                <textarea
+                  id="technische_anlagen"
+                  placeholder="Beschreibe das Objekt hier..."
+                  value={formData.technische_anlagen}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      technische_anlagen: e.target.value,
+                    })
+                  }
+                  readOnly={isReadonly}
+                  rows={5}
                 />
-              <InfoTooltip text="zusätzliche Informationen zur Baukonstruktion als Ergänzung zur Beschreibung der Kosten nach DIN 276. - Beispieltext: Zwar wurden Varianten für die Energieversorgung berechnet, dennoch musste das Passivhaus an Fernwärme angeschlossen werden. Sie wird an einen gemeinsamen Speicher übergeben, an den auch Flachkollektoren angeschlossen sind. Um eine Nachrüstung von Photovoltaikelementen zu vereinfachen, wurden Leerrohre verlegt. Jede Wohnung erhielt eine Zu- und Abluftanlage mit Wärmerückgewinnung. Die Luftdichtheit der Gebäude wurde mit einem Blower-Door-Test geprüft. Die passivhaustauglichen Holz-Aluminium-Fenster mit Dreifachverglasung sind zudem hoch schalldämmend." />
-                </StyledFieldTooltip>
+                <InfoTooltip text="zusätzliche Informationen zur Baukonstruktion als Ergänzung zur Beschreibung der Kosten nach DIN 276. - Beispieltext: Zwar wurden Varianten für die Energieversorgung berechnet, dennoch musste das Passivhaus an Fernwärme angeschlossen werden. Sie wird an einen gemeinsamen Speicher übergeben, an den auch Flachkollektoren angeschlossen sind. Um eine Nachrüstung von Photovoltaikelementen zu vereinfachen, wurden Leerrohre verlegt. Jede Wohnung erhielt eine Zu- und Abluftanlage mit Wärmerückgewinnung. Die Luftdichtheit der Gebäude wurde mit einem Blower-Door-Test geprüft. Die passivhaustauglichen Holz-Aluminium-Fenster mit Dreifachverglasung sind zudem hoch schalldämmend." />
+              </StyledFieldTooltip>
             </div>
 
             <div className="spacebetween-info">
               <label htmlFor="beschreibung_sonstiges">Sonstiges: </label>
               <StyledFieldTooltip>
-
-              <textarea
-                id="beschreibung_sonstiges"
-                placeholder="Beschreibe das Objekt hier..."
-                value={formData.beschreibung_sonstiges}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    beschreibung_sonstiges: e.target.value,
-                  })
-                }
-                readOnly={isReadonly}
-                rows={5}
+                <textarea
+                  id="beschreibung_sonstiges"
+                  placeholder="Beschreibe das Objekt hier..."
+                  value={formData.beschreibung_sonstiges}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      beschreibung_sonstiges: e.target.value,
+                    })
+                  }
+                  readOnly={isReadonly}
+                  rows={5}
                 />
-              <InfoTooltip text="zusätzliche interessante Informationen zum Objekt - Beispieltext: Der kompakte Baukörper hat eine weinrote Holzfassade und ein hellgraues Staffelgeschoss. Auf der Nordseite wurden neben den Fenstern rückseitig lackierte Gläser eingesetzt. Sie lassen die Fensterformate breiter erscheinen, während innen flexibel möbliert werden kann. Die Holzinnendecken wurden weiß lasiert. Als weiteres Gestaltungselement wurden in den Treppenaugen Regale eingebaut. Den Vorbereich prägen optisch abgetrennte Carports und ein Holzsteg unter einem Glasvordach. Der Bereich hinter dem Haus wurde mit Erde angefüllt und erhielt eine Gartenanlage mit einer Trockenmauer." />
-                </StyledFieldTooltip>
+                <InfoTooltip text="zusätzliche interessante Informationen zum Objekt - Beispieltext: Der kompakte Baukörper hat eine weinrote Holzfassade und ein hellgraues Staffelgeschoss. Auf der Nordseite wurden neben den Fenstern rückseitig lackierte Gläser eingesetzt. Sie lassen die Fensterformate breiter erscheinen, während innen flexibel möbliert werden kann. Die Holzinnendecken wurden weiß lasiert. Als weiteres Gestaltungselement wurden in den Treppenaugen Regale eingebaut. Den Vorbereich prägen optisch abgetrennte Carports und ein Holzsteg unter einem Glasvordach. Der Bereich hinter dem Haus wurde mit Erde angefüllt und erhielt eine Gartenanlage mit einer Trockenmauer." />
+              </StyledFieldTooltip>
             </div>
-
           </StyledFieldset>
 
           <StyledButton
@@ -1008,7 +1053,13 @@ export default function Form() {
             </legend>
 
             <h3>Region</h3>
-            <p>Die Zuordnung sinngemäß vornehmen, z. B. Großstadt auch dann ankreuzen, wenn der Standort des Objekts zwar eine nichtstädtische Gemeinde (Land) ist, die aber im Hinblick auf die Angebotssituation für Bauleistungen im Einzugsgebiet einer Großstadt liegt.</p>
+            <p>
+              Die Zuordnung sinngemäß vornehmen, z. B. Großstadt auch dann
+              ankreuzen, wenn der Standort des Objekts zwar eine nichtstädtische
+              Gemeinde (Land) ist, die aber im Hinblick auf die
+              Angebotssituation für Bauleistungen im Einzugsgebiet einer
+              Großstadt liegt.
+            </p>
             <StyledRadiobuttons>
               <label>
                 <input
@@ -1052,7 +1103,12 @@ export default function Form() {
             </StyledRadiobuttons>
 
             <h3>Konjunktur</h3>
-            <p>Ihre Einschätzung zum Zeitpunkt der Hauptvergaben: schwach = Rezessionsphase, sehr günstige Angebote; mittel = durchschnittliche Angebotssituation; hoch = Hochkonjunktur, große Baunachfrage, relativ hohe Angebotspreise.</p>
+            <p>
+              Ihre Einschätzung zum Zeitpunkt der Hauptvergaben: schwach =
+              Rezessionsphase, sehr günstige Angebote; mittel =
+              durchschnittliche Angebotssituation; hoch = Hochkonjunktur, große
+              Baunachfrage, relativ hohe Angebotspreise.
+            </p>
             <StyledRadiobuttons>
               <label>
                 <input
@@ -1215,10 +1271,10 @@ export default function Form() {
                     parseFloat(formData.tf) || 0,
                     parseFloat(formData.bgf) || 0,
                   ]
-                  // summieren von Zahlen:
-                  .reduce((a, b) => a + b, 0)
-                  .toFixed(2)
-                  .replace(".", ",")}
+                    // summieren von Zahlen:
+                    .reduce((a, b) => a + b, 0)
+                    .toFixed(2)
+                    .replace(".", ",")}
                 </span>
                 <span> m²</span>
               </div>
@@ -1319,7 +1375,6 @@ export default function Form() {
                   <br></br>
                   <br></br>
                   <br></br>
-
                 </StyledUploads>
               );
             })}
@@ -1411,11 +1466,11 @@ const StyledRadiobuttons = styled.div`
   gap: 1.5rem;
 
   label {
-  // background-color: red;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 150px;
+    // background-color: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
   }
 `;
 
@@ -1433,12 +1488,12 @@ const StyledBackButton = styled.button`
 `;
 
 const StyledFieldTooltip = styled.div`
-min-width: 400px;
+  min-width: 400px;
 
-display: flex;
+  display: flex;
 `;
 
 const StyledUploads = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
