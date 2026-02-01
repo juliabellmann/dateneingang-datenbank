@@ -163,6 +163,54 @@ export default function Dashboard() {
     router.push('/profile/edit');
   };
 
+  // Funktion, um die Forms-Liste neu zu laden (wie in useEffect)
+const refreshForms = async () => {
+  if (!user) return;
+
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('company_name, isadmin')
+    .eq('id', user.id)
+    .single();
+
+  setProfile(profileData);
+  if (profileData?.isadmin) setUserRole('admin');
+
+  let formsQuery = supabase
+    .from('forms')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (profileData?.isadmin) {
+    formsQuery = formsQuery.eq('status', 'submitted');
+  } else {
+    formsQuery = formsQuery.eq('user_id', user.id);
+  }
+
+  const { data: formsData } = await formsQuery;
+  if (!formsData) {
+    setForms([]);
+    return;
+  }
+
+  const userIds = Array.from(new Set(formsData.map((f) => f.user_id).filter(Boolean)));
+  let profilesMap = {};
+  if (userIds.length > 0) {
+    const { data: profilesData } = await supabase
+      .from('profiles')
+      .select('id, company_name')
+      .in('id', userIds);
+    profilesMap = profilesData?.reduce((acc, p) => ({ ...acc, [p.id]: p }), {}) || {};
+  }
+
+  const enrichedForms = formsData.map((f) => ({
+    ...f,
+    company_name: profilesMap[f.user_id]?.company_name ?? null,
+  }));
+
+  setForms(enrichedForms);
+};
+
   return (
     <>
       <StyledDashboard>
@@ -229,14 +277,42 @@ export default function Dashboard() {
                         {form.status === 'draft' ? 'Weiter bearbeiten' : 'Ansehen'}
                       </StyledButton>
 
-                      {form.status === 'submitted' && (
-                        <StyledButton
-                          onClick={() => window.open(`/api/downloadPdf?id=${form.id}`, '_blank')}
-                          style={{ backgroundColor: '#888' }}
-                        >
-                          PDF
-                        </StyledButton>
-                      )}
+{form.status === 'submitted' && (
+  <>
+    {/* PDF Button */}
+    <StyledButton
+      onClick={() => window.open(`/api/downloadPdf?id=${form.id}`, '_blank')}
+      style={{ backgroundColor: '#888' }}
+    >
+      PDF
+    </StyledButton>
+
+    {userRole === 'admin' && form.status === 'submitted' && (
+  <StyledButton
+    onClick={async () => {
+      const { error } = await supabase
+        .from('forms')
+        .update({ status: 'draft' })
+        .eq('id', form.id);
+
+      if (error) {
+        alert('Fehler beim Zurücksetzen auf Draft');
+        console.error(error);
+      } else {
+        alert('Formular wurde auf Draft zurückgesetzt');
+        // Forms neu laden
+        await refreshForms();
+      }
+    }}
+    style={{ backgroundColor: '#c66' }}
+  >
+    Auf Draft zurücksetzen
+  </StyledButton>
+)}
+
+  </>
+)}
+
                     </div>
                   </StyledList>
                 ))}
