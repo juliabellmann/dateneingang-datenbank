@@ -1358,7 +1358,7 @@ export default function Form() {
                   {/* Vorschau bei Bilddateien */}
                   {previews[key] && (
                     <div style={{ marginTop: "0.5rem" }}>
-                      <img src={previews[key]} alt="Vorschau" width={200} />
+                      {/* <img src={previews[key]} alt="Vorschau" width={200} /> */}
                     </div>
                   )}
 
