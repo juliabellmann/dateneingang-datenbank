@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Link from 'next/link';
 
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +17,7 @@ export default function Login() {
     if (!error) router.push('/dashboard');
     else alert('Fehler beim Einloggen: ' + error.message);
   };
+
 
   return (
     <StyledPage>
@@ -29,6 +31,7 @@ export default function Login() {
     </StyledPage>
   );
 }
+
 
 const StyledPage = styled.div`
   display: flex;

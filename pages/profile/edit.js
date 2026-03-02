@@ -5,6 +5,7 @@ import supabase from '../../lib/supabaseClient';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
+
 export default function EditProfile() {
   const [profile, setProfile] = useState({
     company_name: '',
@@ -77,6 +78,7 @@ export default function EditProfile() {
   };
 
   if (loading) return <p>Lade Profildaten...</p>;
+
 
   return (
     <StyledContainer>
@@ -153,6 +155,7 @@ export default function EditProfile() {
     </StyledContainer>
   );
 }
+
 
 const StyledContainer = styled.div`
   max-width: 600px;

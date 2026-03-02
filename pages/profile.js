@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import supabase from '../lib/supabaseClient';
 import { useRouter } from 'next/router';
 
+
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
     company_name: '',
@@ -30,6 +31,7 @@ export default function ProfilePage() {
     router.push('/dashboard');
   };
 
+  
   return (
     <div>
       <h1>Profil bearbeiten</h1>

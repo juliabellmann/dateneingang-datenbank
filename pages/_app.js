@@ -1,3 +1,5 @@
+// pages/_app.js
+
 import '../styles/globals.css';
 import Layout from '../_components/Layout';
 

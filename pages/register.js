@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Link from 'next/link';
 
+
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,6 +25,7 @@ export default function Register() {
     }
   };
 
+
   return (
     <StyledPage>
       <h2>Registrieren</h2>
@@ -36,6 +38,7 @@ export default function Register() {
     </StyledPage>
   );
 }
+
 
 const StyledPage = styled.div`
   display: flex;
