@@ -4,38 +4,49 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY, // ⚠️ Diese muss im .env stehen, niemals im Browser verwenden!
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 export default async function handler(req, res) {
-  const { id } = req.query;
+   try {
+    const { id } = req.query;
 
-  if (!id) {
-    return res.status(400).json({ error: "Formular-ID fehlt" });
+    if (!id) {
+      return res.status(400).json({ error: "Formular-ID fehlt" });
+    }
+
+    const { data: form, error } = await supabase
+      .from("forms")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.error("Supabase error:", error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    if (!form) {
+      return res.status(404).json({ error: "Formular nicht gefunden" });
+    }
+
+    const PDFDocument = (await import("pdfkit")).default;
+    const doc = new PDFDocument();
+
+    const buffers = [];
+    doc.on("data", buffers.push.bind(buffers));
+    doc.on("end", () => {
+      const pdfData = Buffer.concat(buffers);
+      res.setHeader("Content-Type", "application/pdf");
+      res.send(pdfData);
+    });
+
+    doc.text("Test PDF funktioniert");
+    doc.end();
+  } catch (err) {
+    console.error("SERVER ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
-
-  // Formular aus DB laden
-  const { data: form, error } = await supabase
-    .from("forms")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error || !form) {
-    return res.status(404).json({ error: "Formular nicht gefunden" });
-  }
-
-  // PDF generieren
-  const doc = new PDFDocument();
-
-  // Headers setzen, um Download zu triggern
-  res.setHeader("Content-Type", "application/pdf");
-  res.setHeader(
-    "Content-Disposition",
-    `attachment; filename=formular_${id}.pdf`,
-  );
-
-  doc.pipe(res);
 
   // Hilfe für das formatieren
 

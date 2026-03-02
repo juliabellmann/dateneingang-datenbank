@@ -9,7 +9,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InfoTooltip from "@/_components/InfoTooltip";
 
-// import { useState } from "react";
 
 export default function Form() {
   const router = useRouter();
@@ -95,7 +94,8 @@ export default function Form() {
     upload_three_path: null,
   });
 
-  const [isReadonly, setIsReadonly] = useState(false); // ⬅️ Zustand zum Sperren des Formulars
+// Zustand zum Sperren des Formulars
+  const [isReadonly, setIsReadonly] = useState(false); 
   // Hilfsfunktion: signed URL für bestehendes Bild erzeugen
   async function refreshSignedUrl(key, filePath) {
     if (!filePath) {
@@ -323,7 +323,7 @@ export default function Form() {
 
     const fileName = path.split("/").pop();
 
-    // entfernt führende Zahlen + _ oder -
+    // entfernt führende Zahlen + _ oder - vom File-Namen
     return fileName.replace(/^\d+[_-]/, "");
   };
 
@@ -1322,7 +1322,7 @@ export default function Form() {
                 <StyledUploads key={key}>
                   <label>{labelMap[key]}:</label>
 
-                  {/* verstecktes File-Input */}
+                  {/* verstecktes File-Input bei isReadonly */}
                   <input
                     type="file"
                     id={`file-${key}`}
@@ -1331,7 +1331,7 @@ export default function Form() {
                     disabled={isReadonly}
                   />
 
-                  {/* eigener Button */}
+                  {/* Button */}
                   <StyledButton
                     type="button"
                     onClick={() =>
@@ -1400,7 +1400,7 @@ export default function Form() {
           </StyledButton>
         </form>
 
-        {/* ⬇️ Zurück-Button nur im readonly-Modus */}
+        {/* Zurück-Button nur im readonly-Modus */}
         {isReadonly && (
           <>
             <StyledBackButton
@@ -1460,7 +1460,6 @@ const StyledButton = styled.button`
 `;
 
 const StyledRadiobuttons = styled.div`
-  // background-color: green;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
@@ -1489,7 +1488,6 @@ const StyledBackButton = styled.button`
 
 const StyledFieldTooltip = styled.div`
   min-width: 400px;
-
   display: flex;
 `;
 

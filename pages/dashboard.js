@@ -1,8 +1,10 @@
 // pages/dashboard.js
+
 import { useEffect, useState } from 'react';
 import supabase from '../lib/supabaseClient';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -25,7 +27,7 @@ export default function Dashboard() {
 
       setUser(user);
 
-      // 📥 Profil laden — nur vorhandene Felder anfragen (ohne role)
+      // Profil laden — nur vorhandene Felder anfragen (ohne role)
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('company_name, company_street, company_house_nr, company_zip, company_city, company_contact_person, isadmin')
@@ -41,9 +43,8 @@ export default function Dashboard() {
       }
 
 
-      // -------------------------
-      // 1) Forms laden (abhängig von role)
-      // -------------------------
+      // Forms laden (abhängig von role)
+
       let formsQuery = supabase
         .from('forms')
         .select('*')
@@ -71,9 +72,9 @@ export default function Dashboard() {
         return;
       }
 
-      // -------------------------
-      // 2) Profiles für alle forms per IN abfragen
-      // -------------------------
+
+      // Profiles für alle forms per IN abfragen
+
       const userIds = Array.from(new Set(formsData.map((f) => f.user_id).filter(Boolean)));
       let profilesMap = {};
 
@@ -98,9 +99,9 @@ export default function Dashboard() {
         }, {});
       }
 
-      // -------------------------
-      // 3) Forms mit company_name anreichern
-      // -------------------------
+
+      // Forms mit company_name anreichern
+
       const enrichedForms = formsData.map((f) => ({
         ...f,
         company_name: profilesMap[f.user_id]?.company_name ?? null,
