@@ -105,7 +105,7 @@ export default function Form() {
 
     const { data, error } = await supabase.storage
       .from("form_files")
-      .createSignedUrl(filePath, 60 * 10);
+      .createSignedUrl(filePath, 60 * 60 *24);
 
     if (error) {
       console.error("Signed URL Fehler:", error);
@@ -302,7 +302,7 @@ export default function Form() {
     try {
       const { data, error } = await supabase.storage
         .from("form_files")
-        .createSignedUrl(filePath, 60 * 10);
+        .createSignedUrl(filePath, 60 * 60 * 24);
 
       if (error) throw error;
 
