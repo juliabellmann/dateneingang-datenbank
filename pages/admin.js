@@ -1,6 +1,8 @@
 // pages/admin.js
+
 import { useEffect, useState } from 'react';
 import supabase from '../lib/supabaseClient';
+
 
 export default function Admin() {
   const [forms, setForms] = useState([]);
@@ -62,6 +64,7 @@ export default function Admin() {
     })();
   }, []);
 
+  
   return (
     <div>
       <h1>Alle Formulare</h1>
