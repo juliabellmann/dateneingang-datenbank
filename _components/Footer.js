@@ -64,8 +64,7 @@ const StyledFooter = styled.footer`
 
   color: white;
 
-  margin-top: 4rem;
-  padding: 1rem;
+  /* padding: 1rem; */
 
   display: flex;
   justify-content: space-evenly;
@@ -77,5 +76,5 @@ const StyledFooter = styled.footer`
   right: 0;
   z-index: 10;
 
-  height: 50px;
+  height: 3rem;
 `;

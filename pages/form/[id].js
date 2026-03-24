@@ -346,13 +346,13 @@ export default function Form() {
           </p>
         )}
 
-        <form>
+        <StyledForm>
           <StyledFieldset>
             <legend>
               <h2>1. Allgemeine Angaben</h2>
             </legend>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="objektbezeichnung">
                 Objektbezeichnung / Art der Nutzung:{" "}
               </label>
@@ -368,9 +368,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="bauherr">Bauherr: </label>
               <input
                 id="bauherr"
@@ -381,11 +381,11 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
             <p>Objektstandort: </p>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="street">Straße: </label>
               <input
                 id="street"
@@ -396,9 +396,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="housenumber">Hausnummer: </label>
               <input
                 id="housenumber"
@@ -409,9 +409,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="postalcode">Postleitzahlt: </label>
               <input
                 id="postalcode"
@@ -422,9 +422,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="city">Stadt: </label>
               <input
                 id="city"
@@ -435,9 +435,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="landkreis">Landkreis: </label>
               <input
                 id="landkreis"
@@ -448,9 +448,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="bundesland">Bundesland: </label>
               <input
                 id="bundesland"
@@ -461,11 +461,11 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
             <p>Bauzeiten: </p>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="planungsbeginn">Planungsbeginn: </label>
               <input
                 type="date"
@@ -476,8 +476,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="vergabedatum">Haupt-/Rohbauvergabe: </label>
               <input
                 type="date"
@@ -488,8 +489,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="baubeginn">Baubeginn: </label>
               <input
                 type="date"
@@ -500,8 +502,9 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="bauende">Bauende: </label>
               <input
                 type="date"
@@ -512,13 +515,13 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
             <p>
               * Hinweis: wenn der genaue Tag der Vergabe nicht bekannt ist,
               geben Sie bitte den 1. Tag des jeweiligen Monats an.
             </p>
             <p> Copyrights für die Fotos: </p>
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="fotograf">Copyright liegt bei: </label>
               <input
                 id="fotograf"
@@ -529,10 +532,10 @@ export default function Form() {
                 }
                 readOnly={isReadonly}
               />
-            </div>
+            </FormRow>
 
             <h3>Nutzeinheiten</h3>
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="NE_buero">
                 Bürogebäude - Anzahl Arbeitsplätze:{" "}
               </label>
@@ -546,8 +549,8 @@ export default function Form() {
                   setFormData({ ...formData, NE_buero: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="NE_institut">
                 Institutsgebäude - Anzahl Arbeitsplätze:{" "}
               </label>
@@ -561,8 +564,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_institut: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_krankenhaus">
                 Krankenhaus - Anzahl Betten:{" "}
               </label>
@@ -576,8 +580,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_krankenhaus: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_pflegeheim">
                 Pflegeheim - Anzahl Betten:{" "}
               </label>
@@ -591,8 +596,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_pflegeheim: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_schule_schueler">
                 Schule - Anzahl Schüler:{" "}
               </label>
@@ -609,8 +615,9 @@ export default function Form() {
                   })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_schule_klassen">
                 Schule - Anzahl Klassen:{" "}
               </label>
@@ -627,8 +634,9 @@ export default function Form() {
                   })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_kindergarten_kinder">
                 Kindergarten - Anzahl Kinder:{" "}
               </label>
@@ -645,8 +653,9 @@ export default function Form() {
                   })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_kindergarten_gruppen">
                 Kindergarten - Anzahl Gruppen:{" "}
               </label>
@@ -663,8 +672,9 @@ export default function Form() {
                   })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_wohngebaude">
                 Wohngebäude - Anzahl Wohneinheiten:{" "}
               </label>
@@ -678,8 +688,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_wohngebaude: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_heim">Heim - Anzahl Betten: </label>
               <input
                 type="number"
@@ -691,8 +702,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_heim: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_versammlungsgebauede">
                 Versammlungsgebäude - Anzahl Sitzplätze:{" "}
               </label>
@@ -709,8 +721,9 @@ export default function Form() {
                   })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_gaststaette">
                 Gaststätte - Anzahl Sitzplätze:{" "}
               </label>
@@ -724,8 +737,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_gaststaette: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_hotel">Gaststätte - Anzahl Betten: </label>
               <input
                 type="number"
@@ -737,8 +751,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_hotel: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_laborgebaeude">
                 Laborgebäude - Anzahl Arbeitsplätze:{" "}
               </label>
@@ -752,8 +767,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_laborgebaeude: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_produktionsstaette">
                 Produktionsstätte - Anzahl Arbeitsplätze:{" "}
               </label>
@@ -770,8 +786,9 @@ export default function Form() {
                   })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_feuerwache">
                 Feuerwache - Anzahl Fahrzeugplätze:{" "}
               </label>
@@ -785,8 +802,9 @@ export default function Form() {
                   setFormData({ ...formData, NE_feuerwache: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+
+            <FormRow>
               <label htmlFor="NE_parkhaus">
                 Parkhaus / Garage - Anzahl Stellplätze:{" "}
               </label>
@@ -800,8 +818,8 @@ export default function Form() {
                   setFormData({ ...formData, NE_parkhaus: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="NE_sonst_anz">
                 Sonstiges - Anzahl Nutzeinheit:{" "}
               </label>
@@ -816,23 +834,15 @@ export default function Form() {
                   setFormData({ ...formData, NE_sonst_anz: e.target.value })
                 }
               />
-            </div>
+            </FormRow>
           </StyledFieldset>
-
-          <StyledButton
-            type="button"
-            onClick={handleSave}
-            disabled={isReadonly}
-          >
-            Zwischenspeichern
-          </StyledButton>
 
           <StyledFieldset>
             <legend>
               <h2>2. Objektbeschreibung</h2>
             </legend>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="UGs_anz">Anzahl der UG(s): </label>
               {/* Inputs für Sonstiges etc ergänzen */}
               <input
@@ -845,8 +855,8 @@ export default function Form() {
                   setFormData({ ...formData, UGs_anz: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="UGs_beschreibung">Beschreibung der UG(s):</label>
               <textarea
                 id="UGs_beschreibung"
@@ -861,9 +871,9 @@ export default function Form() {
                 readOnly={isReadonly}
                 rows={5}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="EGs_anz">Anzahl der EG(s): </label>
               {/* Inputs für Sonstiges etc ergänzen */}
               <input
@@ -876,8 +886,8 @@ export default function Form() {
                   setFormData({ ...formData, EGs_anz: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="EGs_beschreibung">Beschreibung der EG(s):</label>
               <textarea
                 id="EGs_beschreibung"
@@ -892,9 +902,9 @@ export default function Form() {
                 readOnly={isReadonly}
                 rows={5}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="OGs_anz">Anzahl der OG(s): </label>
               {/* Inputs für Sonstiges etc ergänzen */}
               <input
@@ -907,8 +917,8 @@ export default function Form() {
                   setFormData({ ...formData, OGs_anz: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="OGs_beschreibung">Beschreibung der OG(s):</label>
               <textarea
                 id="OGs_beschreibung"
@@ -923,9 +933,9 @@ export default function Form() {
                 readOnly={isReadonly}
                 rows={5}
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="DGs_anz">Anzahl der DG(s): </label>
               {/* Inputs für Sonstiges etc ergänzen */}
               <input
@@ -938,8 +948,8 @@ export default function Form() {
                   setFormData({ ...formData, DGs_anz: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="DGs_beschreibung">Beschreibung der DG(s):</label>
               <textarea
                 id="DGs_beschreibung"
@@ -954,7 +964,7 @@ export default function Form() {
                 readOnly={isReadonly}
                 rows={5}
               />
-            </div>
+            </FormRow>
 
             <div className="spacebetween-info">
               <label htmlFor="allgemeine_objektinformation">
@@ -1039,13 +1049,6 @@ export default function Form() {
             </div>
           </StyledFieldset>
 
-          <StyledButton
-            type="button"
-            onClick={handleSave}
-            disabled={isReadonly}
-          >
-            Zwischenspeichern
-          </StyledButton>
 
           <StyledFieldset>
             <legend>
@@ -1195,19 +1198,12 @@ export default function Form() {
             </StyledRadiobuttons>
           </StyledFieldset>
 
-          <StyledButton
-            type="button"
-            onClick={handleSave}
-            disabled={isReadonly}
-          >
-            Zwischenspeichern
-          </StyledButton>
 
           <StyledFieldset>
             <legend>
               <h2>4. Flächen und Rauminhalte nach DIN 277:2021-08</h2>
             </legend>
-            <div className="spacebetween">
+            <FormRow>
               <label htmlFor="nuf">Nutzungsflächen: </label>
               <input
                 type="number"
@@ -1219,8 +1215,8 @@ export default function Form() {
                   setFormData({ ...formData, nuf: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="tf">Technikfläche: </label>
               <input
                 type="number"
@@ -1232,8 +1228,8 @@ export default function Form() {
                   setFormData({ ...formData, tf: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="vf">Verkehrsfläche: </label>
               <input
                 type="number"
@@ -1245,8 +1241,8 @@ export default function Form() {
                   setFormData({ ...formData, vf: e.target.value })
                 }
               />
-            </div>
-            <div className="spacebetween">
+            </FormRow>
+            <FormRow>
               <label htmlFor="bgf">Brutto-Grundfläche: </label>
               <input
                 type="number"
@@ -1258,9 +1254,9 @@ export default function Form() {
                   setFormData({ ...formData, bgf: e.target.value })
                 }
               />
-            </div>
+            </FormRow>
 
-            <div className="spacebetween">
+            <FormRow>
               <span>Netto-Raumfläche: </span>
               <div>
                 <span>
@@ -1278,16 +1274,9 @@ export default function Form() {
                 </span>
                 <span> m²</span>
               </div>
-            </div>
+            </FormRow>
           </StyledFieldset>
 
-          <StyledButton
-            type="button"
-            onClick={handleSave}
-            disabled={isReadonly}
-          >
-            Zwischenspeichern
-          </StyledButton>
 
           <StyledFieldset>
             <legend>
@@ -1295,14 +1284,7 @@ export default function Form() {
             </legend>
           </StyledFieldset>
 
-          <StyledButton
-            type="button"
-            onClick={handleSave}
-            disabled={isReadonly}
-          >
-            Zwischenspeichern
-          </StyledButton>
-
+ 
           <StyledFieldset>
             <legend>
               <h2>6. weitere Projektangaben</h2>
@@ -1380,6 +1362,15 @@ export default function Form() {
             })}
           </StyledFieldset>
 
+          <StyledButton
+            type="button"
+            onClick={handleSubmit}
+            disabled={isReadonly}
+          >
+            Absenden
+          </StyledButton>
+
+        <StyledButtonBar>
           {/* Buttons deaktivieren, wenn readonly */}
           <StyledButton
             type="button"
@@ -1391,14 +1382,9 @@ export default function Form() {
           <StyledButton type="button" onClick={() => router.push("/dashboard")}>
             Zurück zur Übersicht
           </StyledButton>
-          <StyledButton
-            type="button"
-            onClick={handleSubmit}
-            disabled={isReadonly}
-          >
-            Absenden
-          </StyledButton>
-        </form>
+          </StyledButtonBar>
+
+        </StyledForm>
 
         {/* Zurück-Button nur im readonly-Modus */}
         {isReadonly && (
@@ -1414,33 +1400,70 @@ export default function Form() {
             </StyledButton>
           </>
         )}
+
+
+
         <ToastContainer position="top-right" />
       </StyledSite>
     </>
   );
 }
 
+const StyledForm = styled.form`
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 4rem;
+`;
+
 const StyledSite = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: rgba(198,220,225,.2);
-  margin: 5rem 15rem;
-  padding: 0 0 3rem 0; */
+
 `;
 
 const StyledFieldset = styled.fieldset`
   background-color: var(--bg-color-highlight);
-  width: 1400px;
+  width: 80%;
 
   div {
     /* Breite des Inhalts im fieldset */
-    width: 50%;
+    width: 70%;
+  }
+
+  p {
+    /* Breite des Inhalts im fieldset */
+    width: 90%;
+    padding: 1rem 0;
   }
 `;
 
+
+const FormRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  align-items: center;
+
+  /* @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  } */
+
+  label {
+    /* font-weight: 300; */
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+  }
+`;
+
+
 const StyledButton = styled.button`
-  background-color: #b5a286;
+  background-color: var(--secondary-color);
   color: white;
   border: none;
   padding: 10px 16px;
@@ -1448,7 +1471,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #b5a286;
+    background-color: var(--secondary-color);
     text-decoration: underline;
   }
 
@@ -1494,4 +1517,22 @@ const StyledFieldTooltip = styled.div`
 const StyledUploads = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+
+const StyledButtonBar = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  background-color: var(--bg-color-highlight);
+  padding: 1rem;
+
+  position: fixed;
+  bottom: 3rem;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  height: 5rem;
 `;

@@ -3,17 +3,19 @@ import styled from 'styled-components';
 import Navi from './Navi';
 import Footer from './Footer';
 
+
 export default function Layout({ children }) {
-  return (
+ return (
     <>
       <Navi />
-      <Main>{children}</Main>
+        <Content>{children}</Content>
       <Footer />
     </>
   );
 }
 
-const Main = styled.main`
-  flex: 1;
-  padding-bottom: 8rem;
+
+const Content = styled.div`
+  width: 100%;
+  padding: 0 0 5rem 0;
 `;

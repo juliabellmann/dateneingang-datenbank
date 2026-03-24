@@ -340,7 +340,7 @@ const StyledSection = styled.section`
 `;
 
 const StyledContainer = styled.div`
-  width: 1400px;
+  width: 80%;
   display: flex;
   flex-direction: column;
 `;
@@ -359,7 +359,7 @@ const StyledButton = styled.button`
 `;
 
 const StyledForms = styled.div`
-  padding: 1rem;
+  padding: 1rem 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -373,5 +373,5 @@ const StyledList = styled.li`
   align-items: center;
   gap: 1rem;
   margin: 0.5rem 0;
-  height: 50px;
+  height: 3.5rem;
 `;

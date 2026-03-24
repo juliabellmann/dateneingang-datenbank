@@ -13,7 +13,7 @@ export default function Navi() {
 }
 
 const StyledNavigation = styled.nav`
-  padding: 4rem 15rem;
+  padding: 2.5rem 15rem;
 
   display: flex;
   align-items: center;
